@@ -87,9 +87,26 @@ Week 3 is complete when the authenticated app shell is responsive, navigation is
 
 - Result: profile/preferences/skills schema and repositories.
 - Sessions: Prisma models, migrations, Zod schemas, service layer.
-- Files: `prisma/schema.prisma`, `src/features/profile`.
-- Tests: unit tests for validation and ownership.
+- Files: `prisma/schema.prisma`, `prisma/migrations`, `src/features/profile`.
+- Tests: `npx prisma generate`, `env DATABASE_URL=postgresql://user:password@localhost:5432/aca npx prisma validate`, `npm audit --audit-level=moderate`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, `npm run test:e2e`.
+- Acceptance: profile, preference, and skill models are user-owned; validation normalizes profile input; ownership helpers prevent cross-user access; repository methods scope every query by `userId`.
+- Push step: commit the Week 4 profile data model and push `main` to GitHub.
+- Deploy step: still deferred until a server-capable Next.js environment and PostgreSQL database are selected.
+- Review step: inspect Prisma schema, repository methods, and unit tests for user-data isolation.
 - Commit: `feat: add profile persistence`
+
+### Week 4 Completion Review
+
+Use this checklist to review Week 4:
+
+1. Run `npx prisma generate`.
+2. Run `env DATABASE_URL=postgresql://user:password@localhost:5432/aca npx prisma validate`.
+3. Run `npm audit --audit-level=moderate`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, and `npm run test:e2e`.
+4. Confirm `CareerProfile`, `Preference`, and `Skill` exist in `prisma/schema.prisma`.
+5. Confirm profile repository methods in `src/features/profile` accept `userId` and scope all reads/writes by it.
+6. Confirm validation tests cover profile normalization, compensation constraints, skill deduplication, and ownership checks.
+
+Week 4 is complete when the schema validates, the client generates, user-scoped repository boundaries exist, tests pass, and the branch is pushed to GitHub.
 
 ## Week 5: Profile UI and Onboarding
 

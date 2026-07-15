@@ -18,6 +18,10 @@
 - `DuplicateMatch`: duplicate analysis between jobs/applications.
 - `ActivityEvent`: product analytics and audit-style events.
 
+## Implementation Status
+
+Week 4 implements the first user-owned product data models: `CareerProfile`, `Preference`, and `Skill`, alongside the Auth.js account/session tables from Week 2. Later weeks will add resumes, jobs, scores, questions, applications, review queue items, duplicate matches, and activity events.
+
 ## Ownership Rules
 
 Every user-owned table includes `userId`. Queries must filter by `userId`; IDs alone are never sufficient. Child records inherit ownership from their parent and still store `userId` for simpler authorization and indexes.
