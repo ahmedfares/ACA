@@ -60,10 +60,28 @@ Week 2 is complete when the protected dashboard works locally, the Prisma schema
 
 - Result: responsive dashboard shell and navigation.
 - Sessions: shadcn components, layout, nav, empty dashboard cards.
-- Files: `src/app/(app)`, `src/components`.
-- Tests: RTL render smoke tests.
-- Acceptance: mobile and desktop layout usable.
+- Files: `src/app/(app)`, `src/components/app`, `src/components/ui`, `tests/unit`, `tests/e2e`.
+- Tests: `npm audit --audit-level=moderate`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, `npm run test:e2e`.
+- Acceptance: signed-in users see a responsive authenticated shell with desktop/mobile navigation, dashboard metrics, next-action cards, and placeholder destinations for planned modules.
+- Push step: commit the Week 3 app shell and push `main` to GitHub.
+- Deploy step: defer authenticated deployment until the server-capable deployment target from Week 2 is selected.
+- Review step: sign in locally, inspect the dashboard at desktop and mobile widths, and click primary navigation destinations.
 - Commit: `feat: add authenticated app shell`
+
+### Week 3 Completion Review
+
+Use this checklist to review Week 3:
+
+1. Run `npm install` if dependencies are not installed.
+2. Run `npm audit --audit-level=moderate`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, and `npm run test:e2e`.
+3. Run `npm run dev` and open `http://localhost:3000/dashboard`.
+4. Sign in with `demo@example.com` / `change-me` unless overridden by environment variables.
+5. Confirm the desktop sidebar appears on wide screens.
+6. Confirm the horizontal mobile navigation appears on narrow screens.
+7. Confirm dashboard metrics and next-action cards render.
+8. Click Profile, Resume, Jobs, Top Matches, Review Queue, Question Bank, and Settings; each should open a placeholder page.
+
+Week 3 is complete when the authenticated app shell is responsive, navigation is usable, placeholder module pages are reachable, all checks pass, and the branch is pushed to GitHub.
 
 ## Week 4: Profile Data Model
 

@@ -11,4 +11,8 @@ test("protects dashboard and allows demo sign in", async ({ page }) => {
 
   await expect(page).toHaveURL(/\/dashboard/);
   await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+  const primaryNav = page.getByRole("navigation", { name: "Primary" }).first();
+  await expect(primaryNav).toBeVisible();
+  await expect(primaryNav.getByRole("link", { name: "Profile" })).toBeVisible();
+  await expect(primaryNav.getByRole("link", { name: "Jobs" })).toBeVisible();
 });
