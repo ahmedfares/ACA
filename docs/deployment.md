@@ -11,7 +11,7 @@
 
 ## Week 1 Simple Deployment
 
-The Week 1 landing page is static. The build script exports the app and copies the static output to `dist/` so it can be served by a simple static hosting environment.
+The Week 1 landing page is static. The build script exports the app, copies the static output to `dist/`, copies hosting metadata, and adds a small Node entrypoint at `dist/server/index.js` for the simple Sites runtime.
 
 ## Required Environment Variables
 
