@@ -1,4 +1,5 @@
 import { ArrowRight, CheckCircle2, FileText, ShieldCheck, Sparkles } from "lucide-react";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
@@ -20,8 +21,8 @@ export default function Home() {
             </div>
             <span className="text-lg font-semibold tracking-normal">ACA</span>
           </div>
-          <Button variant="outline" size="sm">
-            Sign in
+          <Button asChild variant="outline" size="sm">
+            <Link href="/sign-in">Sign in</Link>
           </Button>
         </nav>
 
@@ -36,9 +37,11 @@ export default function Home() {
               application material, remember your best answers, and prevent duplicate applications.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button size="lg" className="gap-2">
-                Start setup
-                <ArrowRight className="size-4" aria-hidden="true" />
+              <Button asChild size="lg" className="gap-2">
+                <Link href="/dashboard">
+                  Start setup
+                  <ArrowRight className="size-4" aria-hidden="true" />
+                </Link>
               </Button>
               <Button variant="outline" size="lg">
                 View architecture

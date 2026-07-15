@@ -5,14 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build && rm -rf dist && mkdir -p dist/server dist/.openai && cp -R out/. dist && cp .openai/hosting.json dist/.openai/hosting.json && cp scripts/sites-static-server.mjs dist/server/index.js",
+    "build": "next build",
+    "build:static": "next build && rm -rf dist && mkdir -p dist/server dist/.openai && cp -R out/. dist && cp .openai/hosting.json dist/.openai/hosting.json && cp scripts/sites-static-server.mjs dist/server/index.js",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "deploy:cloudflare": "npm run build && wrangler deploy",
+    "deploy:cloudflare": "npm run build:static && wrangler deploy",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev"
   },

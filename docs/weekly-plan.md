@@ -33,10 +33,28 @@ Week 1 is complete when the validation commands pass, the local app renders, the
 
 - Result: Prisma, User model, Auth.js configured.
 - Sessions: configure Prisma/Postgres; add protected layout and sign-in flow.
-- Files: `prisma/schema.prisma`, `src/auth.ts`, `src/app/(auth)`.
-- Tests: auth smoke test, typecheck.
-- Acceptance: signed-in protected dashboard.
+- Files: `prisma/schema.prisma`, `src/auth.ts`, `src/app/(auth)`, `src/app/(app)`, `src/app/api/auth/[...nextauth]`, `middleware.ts`.
+- Tests: `npx prisma generate`, `env DATABASE_URL=postgresql://user:password@localhost:5432/aca npx prisma validate`, `npm audit --audit-level=moderate`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, `npm run test:e2e`.
+- Acceptance: unauthenticated users are redirected from `/dashboard` to `/sign-in`; dev credentials can sign in; signed-in user can view the protected dashboard.
+- Push step: commit the Week 2 auth/database foundation and push `main` to GitHub.
+- Deploy step: defer authenticated deployment until a server-capable Next.js environment and PostgreSQL database are configured; the Week 1 static Cloudflare worker remains available for the public landing shell.
+- Review step: open `http://localhost:3000/dashboard`, confirm redirect to sign-in, sign in with dev credentials, and confirm the dashboard renders.
 - Commit: `feat: add auth and database foundation`
+
+### Week 2 Completion Review
+
+Use this checklist to review Week 2:
+
+1. Run `npm install` if dependencies are not installed.
+2. Run `npx prisma generate`.
+3. Run `env DATABASE_URL=postgresql://user:password@localhost:5432/aca npx prisma validate`.
+4. Run `npm audit --audit-level=moderate`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, and `npm run test:e2e`.
+5. Run `npm run dev` and open `http://localhost:3000/dashboard`.
+6. Confirm the app redirects to `/sign-in`.
+7. Sign in with `demo@example.com` / `change-me` unless overridden by `DEV_AUTH_EMAIL` and `DEV_AUTH_PASSWORD`.
+8. Confirm the protected dashboard renders and the sign-out control is visible.
+
+Week 2 is complete when the protected dashboard works locally, the Prisma schema validates, all checks pass, and the branch is pushed to GitHub.
 
 ## Week 3: App Shell
 

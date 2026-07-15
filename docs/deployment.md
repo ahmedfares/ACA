@@ -13,6 +13,8 @@
 
 The Week 1 landing page is static. The build script exports the app, copies the static output to `dist/`, copies hosting metadata, and adds a small Node entrypoint at `dist/server/index.js` for the simple Sites runtime.
 
+Week 2 introduces Auth.js route handlers and protected pages, so the primary `npm run build` command now produces a normal dynamic Next.js build. Static Cloudflare deployment remains available through `npm run deploy:cloudflare` for the public landing shell, but the authenticated MVP should deploy to a server-capable Next.js environment with PostgreSQL.
+
 ## Cloudflare Deployment
 
 The repository includes `wrangler.jsonc` for Cloudflare Workers static assets. Cloudflare's Workers assets configuration supports an `assets.directory`, an optional asset binding, HTML handling, and 404 handling.
