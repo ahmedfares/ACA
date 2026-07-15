@@ -13,6 +13,28 @@
 
 The Week 1 landing page is static. The build script exports the app, copies the static output to `dist/`, copies hosting metadata, and adds a small Node entrypoint at `dist/server/index.js` for the simple Sites runtime.
 
+## Cloudflare Deployment
+
+The repository includes `wrangler.jsonc` for Cloudflare Workers static assets. Cloudflare's Workers assets configuration supports an `assets.directory`, an optional asset binding, HTML handling, and 404 handling.
+
+For direct deployment with Wrangler:
+
+```bash
+npm install
+npm run build
+npx wrangler login
+npm run deploy:cloudflare
+```
+
+For GitHub-connected Cloudflare deployment:
+
+1. Push this repository to GitHub.
+2. In Cloudflare, create a Workers/Pages project from Git.
+3. Select the GitHub repository.
+4. Use build command `npm run build`.
+5. Use output directory `dist`.
+6. Add `NODE_VERSION=24` if the Cloudflare build image does not use a compatible Node version by default.
+
 ## Required Environment Variables
 
 ```bash
