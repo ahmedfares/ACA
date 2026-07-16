@@ -10,7 +10,7 @@ import {
   type SkillInput,
 } from "@/features/profile/schemas";
 
-type ProfileDb = Pick<PrismaClient, "careerProfile" | "preference" | "skill">;
+type ProfileDb = Pick<PrismaClient, "careerProfile" | "preference" | "skill" | "user">;
 
 function jsonOrNull(value: unknown) {
   return value === undefined ? Prisma.JsonNull : (value as Prisma.InputJsonValue);
@@ -62,6 +62,21 @@ function skillData(userId: string, input: SkillInput) {
 
 export function createProfileRepository(db: ProfileDb = prisma) {
   return {
+    async ensureUser(user: { email?: string | null; id: string; name?: string | null }) {
+      return db.user.upsert({
+        create: {
+          email: user.email ?? `${user.id}@local.invalid`,
+          id: user.id,
+          name: user.name ?? null,
+        },
+        update: {
+          email: user.email ?? `${user.id}@local.invalid`,
+          name: user.name ?? null,
+        },
+        where: { id: user.id },
+      });
+    },
+
     async getProfileBundle(userId: string) {
       const [careerProfile, preference, skills] = await Promise.all([
         db.careerProfile.findUnique({ where: { userId } }),

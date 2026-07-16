@@ -112,9 +112,27 @@ Week 4 is complete when the schema validates, the client generates, user-scoped 
 
 - Result: user can complete core profile.
 - Sessions: onboarding/profile form, save/load, validation errors.
-- Files: `src/app/(app)/profile`, `src/app/(app)/onboarding`.
-- Tests: form tests.
+- Files: `src/app/(app)/profile`, `src/app/(app)/onboarding`, `src/components/profile`, `src/features/profile`.
+- Tests: `npm audit --audit-level=moderate`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, `npm run test:e2e`.
+- Acceptance: signed-in users can open Profile and Onboarding, see core profile/preference/skill fields, receive validation errors, and save/load profile data when `DATABASE_URL` points to PostgreSQL.
+- Push step: commit the Week 5 profile UI and push `main` to GitHub.
+- Deploy step: still deferred until the server-capable Next.js + PostgreSQL environment is selected.
+- Review step: sign in locally, open `/profile`, confirm the form renders, and verify saving is disabled with a clear message when no database is configured.
 - Commit: `feat: add career profile form`
+
+### Week 5 Completion Review
+
+Use this checklist to review Week 5:
+
+1. Run `npm audit --audit-level=moderate`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, and `npm run test:e2e`.
+2. Run `npm run dev` and open `http://localhost:3000/dashboard`.
+3. Sign in with `demo@example.com` / `change-me` unless overridden by environment variables.
+4. Open `/profile` and confirm the Career Profile form renders.
+5. Open `/onboarding` and confirm it uses the same core profile form.
+6. If `DATABASE_URL` is not configured, confirm the form clearly says saving is disabled.
+7. Once PostgreSQL is configured, save profile data and reload the page to confirm saved values load back into the form.
+
+Week 5 is complete when the profile/onboarding UI is reachable, validation and form parsing are tested, the repository save path is wired, all checks pass, and the branch is pushed to GitHub.
 
 ## Week 6: Resume MVP
 

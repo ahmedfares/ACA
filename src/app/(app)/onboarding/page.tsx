@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { ProfileForm } from "@/components/profile/profile-form";
-import { profileRepository } from "@/features/profile/repository";
 import { emptyProfileDefaults, profileDefaultsFromBundle } from "@/features/profile/view-model";
+import { profileRepository } from "@/features/profile/repository";
 
 async function loadDefaults(userId: string) {
   if (!process.env.DATABASE_URL) {
@@ -17,21 +17,21 @@ async function loadDefaults(userId: string) {
   }
 }
 
-export default async function ProfilePage() {
+export default async function OnboardingPage() {
   const session = await auth();
   const defaults = session?.user?.id ? await loadDefaults(session.user.id) : emptyProfileDefaults;
 
   return (
     <section>
       <div className="mb-8">
-        <p className="text-sm font-medium text-primary">Week 5 profile UI</p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-normal">Career profile</h1>
+        <p className="text-sm font-medium text-primary">Onboarding</p>
+        <h1 className="mt-2 text-3xl font-semibold tracking-normal">Start with your career profile</h1>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
-          Capture the core facts and preferences that will drive job matching, duplicate decisions,
-          and truthful application content.
+          This is the minimum foundation the assistant needs before resume, job, and scoring workflows
+          can be useful.
         </p>
       </div>
-      <ProfileForm databaseConfigured={Boolean(process.env.DATABASE_URL)} defaults={defaults} />
+      <ProfileForm databaseConfigured={Boolean(process.env.DATABASE_URL)} defaults={defaults} mode="onboarding" />
     </section>
   );
 }
