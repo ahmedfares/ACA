@@ -70,14 +70,14 @@ function TestGuide({ hasLabel, hasText, isDefault }: { hasLabel: boolean; hasTex
             <h2 className="text-lg font-semibold tracking-normal">Test this in 60 seconds</h2>
           </div>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            Paste text or use the sample. Watch the readiness meter and checklist respond instantly.
+            Do these one by one: name the version, paste text, then mark it default. The score should advance one step at a time.
           </p>
           <div className="mt-4 grid gap-2 sm:grid-cols-3">
             {items.map((item) => (
               <div
                 className={cn(
-                  "flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium",
-                  item.complete ? "border-primary/30 bg-primary/5" : "bg-background text-muted-foreground",
+                  "flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium transition-all duration-300",
+                  item.complete ? "aca-complete-pop border-primary/30 bg-primary/5" : "bg-background text-muted-foreground",
                 )}
                 key={item.label}
               >
@@ -96,10 +96,10 @@ function TestGuide({ hasLabel, hasText, isDefault }: { hasLabel: boolean; hasTex
             <span className="text-primary">{completed}/3</span>
           </div>
           <div className="mt-3 h-2 overflow-hidden rounded-full bg-background">
-            <div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${completed * 33.3}%` }} />
+            <div className="aca-progress-fill h-full rounded-full transition-all duration-700" style={{ width: `${completed * 33.3}%` }} />
           </div>
           <p className="mt-3 text-sm leading-6 text-muted-foreground">
-            This gives Week 7 jobs and Week 10 scoring a default resume to compare against.
+            Upload parsing is planned later; Week 6 keeps resume setup fast with pasted text.
           </p>
         </div>
       </div>
@@ -109,16 +109,14 @@ function TestGuide({ hasLabel, hasText, isDefault }: { hasLabel: boolean; hasTex
 
 export function ResumeManager({ databaseConfigured, resumes }: ResumeManagerProps) {
   const [state, formAction, isPending] = useActionState<ResumeFormState, FormData>(saveResumeForm, {});
-  const [label, setLabel] = useState("Primary resume");
+  const [label, setLabel] = useState("");
   const [rawText, setRawText] = useState("");
-  const [isDefault, setIsDefault] = useState(true);
+  const [isDefault, setIsDefault] = useState(false);
   const readiness = useMemo(() => resumeReadiness(rawText), [rawText]);
   const hasResumeText = rawText.trim().length >= 120;
 
   function useSample() {
-    setLabel("Senior software engineer resume");
     setRawText(sampleResumeText);
-    setIsDefault(true);
   }
 
   return (
@@ -155,7 +153,7 @@ export function ResumeManager({ databaseConfigured, resumes }: ResumeManagerProp
               </span>
             </div>
             <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted">
-              <div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${readiness.percent}%` }} />
+              <div className="aca-progress-fill h-full rounded-full transition-all duration-700" style={{ width: `${readiness.percent}%` }} />
             </div>
             <p className="mt-3 text-sm leading-6 text-muted-foreground">
               Stronger resume context means faster matching and fewer application rewrites later.
@@ -212,8 +210,22 @@ export function ResumeManager({ databaseConfigured, resumes }: ResumeManagerProp
                 value={label}
               />
             </div>
+            <div className="rounded-lg border border-dashed bg-secondary/60 p-3 text-sm leading-6">
+              <div className="font-medium">Upload resume file</div>
+              <p className="mt-1 text-muted-foreground">
+                Planned after the paste MVP. For now, paste text so matching has clean, reviewable context.
+              </p>
+              <button
+                className="mt-3 inline-flex h-9 items-center rounded-md border border-input bg-background px-3 text-sm font-medium text-muted-foreground opacity-70"
+                disabled
+                type="button"
+              >
+                Upload PDF/DOCX later
+              </button>
+            </div>
             <label className="flex items-start gap-3 rounded-lg border bg-background p-3 text-sm leading-6">
               <input
+                aria-label="Use as default"
                 checked={isDefault}
                 className="mt-1"
                 name="isDefault"

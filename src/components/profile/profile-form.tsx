@@ -141,14 +141,9 @@ const suggestionPresets: SuggestionPreset[] = [
     values: {
       currentTitle: "Senior Software Engineer",
       desiredCompensation: "180000",
-      employmentTypes: "Full-time, Direct hire",
       industries: "Software, Cloud, Fintech",
       minCompensation: "150000",
-      preferredLocations: "Remote US, Atlanta hybrid",
       preferredSkills: "Java, Spring Boot, PostgreSQL, AWS, System Design",
-      preferredTitles: "Senior Software Engineer, Backend Engineer, Platform Engineer",
-      remotePreference: "Remote preferred",
-      skills: "Java | Backend | Advanced | 10\nSpring Boot | Backend | Advanced | 8\nPostgreSQL | Database | Advanced | 7\nAWS | Cloud | Advanced | 6\nSystem Design | Architecture | Advanced | 8",
       summary:
         "Senior engineer focused on reliable backend systems, cloud architecture, and product-minded delivery.",
       workAuthorization: "Authorized to work in the United States",
@@ -161,14 +156,9 @@ const suggestionPresets: SuggestionPreset[] = [
     values: {
       currentTitle: "Senior Software Engineer",
       desiredCompensation: "170000",
-      employmentTypes: "Full-time, Direct hire",
       industries: "Software, Enterprise SaaS, E-commerce",
       minCompensation: "145000",
-      preferredLocations: "Remote US, Atlanta hybrid",
       preferredSkills: "React, TypeScript, Node.js, PostgreSQL, System Design",
-      preferredTitles: "Senior Software Engineer, Full-stack Engineer, Staff Software Engineer",
-      remotePreference: "Remote preferred",
-      skills: "React | Frontend | Advanced | 6\nTypeScript | Frontend | Advanced | 5\nNode.js | Backend | Advanced | 5\nPostgreSQL | Database | Advanced | 7\nSystem Design | Architecture | Advanced | 8",
       summary:
         "Full-stack engineer who can own user-facing product work, backend services, and pragmatic architecture.",
       workAuthorization: "Authorized to work in the United States",
@@ -185,11 +175,7 @@ const suggestionPresets: SuggestionPreset[] = [
       industries: "Software, Cloud, Enterprise SaaS",
       leadership: "Technical leadership, mentoring, architecture reviews, delivery planning",
       minCompensation: "170000",
-      preferredLocations: "Remote US, Atlanta hybrid",
       preferredSkills: "System Design, Architecture, Cloud, Mentoring, Delivery Leadership",
-      preferredTitles: "Staff Software Engineer, Tech Lead, Solutions Architect",
-      remotePreference: "Remote preferred",
-      skills: "System Design | Architecture | Advanced | 8\nArchitecture Reviews | Leadership | Advanced | 6\nAWS | Cloud | Advanced | 6\nMentoring | Leadership | Advanced | 5\nJava | Backend | Advanced | 10",
       summary:
         "Technical leader with hands-on engineering depth, mentoring experience, and architecture ownership.",
       workAuthorization: "Authorized to work in the United States",
@@ -279,7 +265,7 @@ function nextWin(values: ProfileFormValues) {
   return "You have a strong profile base";
 }
 
-function testChecklist(values: ProfileFormValues) {
+function testChecklist(values: ProfileFormValues, starterApplied: boolean) {
   const selectedTitles = listFromText(values.preferredTitles).length;
   const selectedLocations = listFromText(values.preferredLocations).length;
   const selectedSkills = values.skills
@@ -289,7 +275,7 @@ function testChecklist(values: ProfileFormValues) {
 
   return [
     {
-      complete: hasText(values.currentTitle) && hasText(values.summary),
+      complete: starterApplied,
       label: "Apply a starter path",
     },
     {
@@ -407,7 +393,7 @@ function ProfileProgress({
             </span>
           </div>
           <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted">
-            <div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${percent}%` }} />
+            <div className="aca-progress-fill h-full rounded-full transition-all duration-700" style={{ width: `${percent}%` }} />
           </div>
           <p className="mt-3 text-sm leading-6 text-muted-foreground">
             Each choice makes job scoring sharper. Keep going one tap at a time.
@@ -425,8 +411,8 @@ function ProfileProgress({
   );
 }
 
-function TestGuide({ values }: { values: ProfileFormValues }) {
-  const items = testChecklist(values);
+function TestGuide({ starterApplied, values }: { starterApplied: boolean; values: ProfileFormValues }) {
+  const items = testChecklist(values, starterApplied);
   const completed = items.filter((item) => item.complete).length;
 
   return (
@@ -446,8 +432,10 @@ function TestGuide({ values }: { values: ProfileFormValues }) {
             {items.map((item) => (
               <div
                 className={cn(
-                  "flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium",
-                  item.complete ? "border-primary/30 bg-primary/5 text-foreground" : "bg-background text-muted-foreground",
+                  "flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium transition-all duration-300",
+                  item.complete
+                    ? "aca-complete-pop border-primary/30 bg-primary/5 text-foreground"
+                    : "bg-background text-muted-foreground",
                 )}
                 key={item.label}
               >
@@ -466,10 +454,10 @@ function TestGuide({ values }: { values: ProfileFormValues }) {
             <span className="text-primary">{completed}/4</span>
           </div>
           <div className="mt-3 h-2 overflow-hidden rounded-full bg-background">
-            <div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${completed * 25}%` }} />
+            <div className="aca-progress-fill h-full rounded-full transition-all duration-700" style={{ width: `${completed * 25}%` }} />
           </div>
           <p className="mt-3 text-sm leading-6 text-muted-foreground">
-            Click a starter path first, then tap chips. The points and next quick win should update immediately.
+            Click one starter path, then make the next choices yourself. Progress should move one step at a time.
           </p>
         </div>
       </div>
@@ -580,6 +568,7 @@ function SuggestionButton({ onApply, preset }: { onApply: (preset: SuggestionPre
 export function ProfileForm({ databaseConfigured, defaults, mode = "profile" }: ProfileFormProps) {
   const [state, formAction, isPending] = useActionState<ProfileFormState, FormData>(saveProfileForm, {});
   const [values, setValues] = useState<ProfileFormValues>(() => normalizeDefaults(defaults));
+  const [starterApplied, setStarterApplied] = useState(false);
   const stats = completionStats(values);
 
   function updateValue(name: keyof ProfileFormDefaults, value: string) {
@@ -588,6 +577,7 @@ export function ProfileForm({ databaseConfigured, defaults, mode = "profile" }: 
 
   function applyPreset(preset: SuggestionPreset) {
     setValues((current) => ({ ...current, ...preset.values }));
+    setStarterApplied(true);
   }
 
   function addSkill(skill: string) {
@@ -633,7 +623,7 @@ export function ProfileForm({ databaseConfigured, defaults, mode = "profile" }: 
         total={stats.total}
       />
 
-      <TestGuide values={values} />
+      <TestGuide starterApplied={starterApplied} values={values} />
 
       <section className="rounded-lg border bg-card p-5 shadow-sm">
         <SectionHeader
