@@ -53,9 +53,11 @@ test("protects dashboard and allows demo sign in", async ({ page }) => {
   await expect(page).toHaveURL(/\/jobs/);
   await expect(page.getByRole("heading", { name: "Capture roles before they blur" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Test this in 60 seconds" })).toBeVisible();
+  await expect(page.getByText("Duplicate check starts as you type")).toBeVisible();
   await expect(page.getByText("Review score").locator("..")).toContainText("0/4");
   await page.getByLabel("Company").fill("Acme Cloud");
   await page.getByLabel("Job title").fill("Senior Software Engineer");
+  await expect(page.getByText("Duplicate check is clear")).toBeVisible();
   await expect(page.getByText("Review score").locator("..")).toContainText("1/4");
   await page.getByLabel("Location").fill("Remote US");
   await page.getByLabel("Remote setup").selectOption("Remote");

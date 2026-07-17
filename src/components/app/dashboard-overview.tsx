@@ -13,7 +13,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 const metrics = [
-  { label: "Jobs added", value: "0", detail: "Manual job entry is ready" },
+  { label: "Jobs added", value: "0", detail: "Entry and duplicate checks are ready" },
   { label: "Scored jobs", value: "0", detail: "AI scoring starts in Week 10" },
   { label: "Review items", value: "0", detail: "Review queue starts in Week 12" },
   { label: "Applications", value: "0", detail: "Tracking starts in Week 15" },
@@ -36,7 +36,7 @@ const nextActions = [
   },
   {
     title: "Jobs",
-    description: "Add roles manually so matching and duplicate checks have a source list.",
+    description: "Add roles manually and catch duplicate postings before they drain attention.",
     href: "/jobs",
     icon: BriefcaseBusiness,
     status: "Week 7",
@@ -117,7 +117,7 @@ export function DashboardOverview() {
             <div className="flex gap-3">
               <AlertCircle className="mt-0.5 size-5 shrink-0 text-accent-foreground" aria-hidden="true" />
               <p className="text-sm leading-6 text-muted-foreground">
-                Scoring, duplicate detection, review queues, and applications remain planned for later slices.
+                Scoring, review queues, and applications remain planned for later slices.
               </p>
             </div>
           </div>

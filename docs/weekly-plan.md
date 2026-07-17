@@ -198,9 +198,29 @@ Week 7 is complete when the Job model exists, job validation and user-scoped rep
 
 - Result: duplicate warnings appear with reasons.
 - Sessions: normalization helpers; duplicate service; UI warning.
-- Files: `src/features/duplicates`, `src/features/jobs`.
-- Tests: duplicate test matrix.
+- Files: `src/features/duplicates`, `src/features/jobs`, `src/components/jobs`.
+- Tests: `npm audit --audit-level=moderate`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, `npm run test:e2e`.
+- Acceptance: signed-in users can enter a job and see explainable duplicate status against saved jobs using normalized URL, source job ID, company/title/location, and description similarity signals.
+- Push step: commit the Week 8 duplicate detection slice and push `main` to GitHub.
+- Deploy step: still deferred until the server-capable Next.js + PostgreSQL environment is selected; duplicate UI can be reviewed locally with saved jobs once persistence is configured.
+- Review step: open `/jobs`, begin entering a job, confirm the duplicate-check panel appears, and with saved jobs present confirm warnings show the duplicate level, confidence, closest match, and reasons.
 - Commit: `feat: add explainable duplicate detection`
+
+### Week 8 Completion Review
+
+Use this checklist to review Week 8:
+
+1. Run `npm audit --audit-level=moderate`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, and `npm run test:e2e`.
+2. Run `npm run dev` and open `http://localhost:3000/jobs`.
+3. Sign in with `demo@example.com` / `change-me` unless overridden by environment variables.
+4. Confirm the Add a job form shows "Duplicate check starts as you type" before entering job identity fields.
+5. Enter Company, Job title, or Job URL and confirm the duplicate panel updates live.
+6. With no saved matching jobs, confirm the panel says "Duplicate check is clear."
+7. Once PostgreSQL is configured, save a job, then enter the same URL again and confirm an "Exact duplicate" warning with a URL reason.
+8. Enter the same company/title/location with a similar description and confirm a "Probable duplicate" warning with reasons.
+9. Enter the same company with a clearly different title and description and confirm it is safe to continue.
+
+Week 8 is complete when duplicate normalization and detection are tested, the Jobs UI shows explainable duplicate warnings, all checks pass, and the branch is pushed to GitHub.
 
 ## Week 9: AI Provider and Prompt Foundation
 

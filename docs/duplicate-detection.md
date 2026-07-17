@@ -96,6 +96,10 @@ Start with deterministic matching:
 
 Add embeddings later only if false positives/negatives are high.
 
+## Week 8 Implementation Scope
+
+Week 8 implements deterministic, explainable duplicate warnings in the Jobs UI. It uses normalized URLs, extracted source job IDs, normalized company/title/location tuples, and token Jaccard description similarity. User override storage on `DuplicateMatch` is still deferred to a later persistence slice.
+
 ## User Overrides
 
 The user can mark a warning as:

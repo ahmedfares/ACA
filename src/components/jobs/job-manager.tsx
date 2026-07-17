@@ -6,21 +6,26 @@ import {
   CheckCircle2,
   ClipboardCheck,
   ExternalLink,
+  Info,
   LinkIcon,
   ListChecks,
   MapPin,
   MousePointerClick,
+  ShieldCheck,
   Sparkles,
+  TriangleAlert,
   Zap,
 } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { detectDuplicates, duplicateSummary, type DuplicateResult } from "@/features/duplicates";
 import { createJobForm, type JobFormState } from "@/features/jobs/actions";
 import { employmentTypeOptions, remoteStatusOptions } from "@/features/jobs/schemas";
 import { cn } from "@/lib/utils";
 
 export type JobListItem = {
+  canonicalUrl?: string | null;
   company: string;
   createdAt: Date | string;
   description: string;
@@ -31,6 +36,8 @@ export type JobListItem = {
   remoteStatus?: string | null;
   salaryMax?: number | null;
   salaryMin?: number | null;
+  source?: string | null;
+  sourceJobId?: string | null;
   status: string;
   title: string;
   updatedAt: Date | string;
@@ -144,10 +151,59 @@ function TestGuide({ values }: { values: JobFormValues }) {
   );
 }
 
+function DuplicateWarning({ results }: { results: DuplicateResult[] }) {
+  const summary = duplicateSummary(results);
+
+  if (summary.level === "Safe to continue") {
+    return (
+      <div className="rounded-lg border border-primary/20 bg-primary/5 p-4 text-sm leading-6">
+        <div className="flex items-center gap-2 font-semibold text-foreground">
+          <ShieldCheck aria-hidden="true" className="size-4 text-primary" />
+          Duplicate check is clear
+        </div>
+        <p className="mt-1 text-muted-foreground">No saved job looks like the one you are entering yet.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="aca-complete-pop rounded-lg border border-amber-500/40 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
+      <div className="flex items-center gap-2 font-semibold">
+        <TriangleAlert aria-hidden="true" className="size-4" />
+        {summary.level}: {summary.confidence}% confidence
+      </div>
+      {summary.matchedJobLabel ? <p className="mt-1">Closest match: {summary.matchedJobLabel}</p> : null}
+      <ul className="mt-2 list-inside list-disc space-y-1">
+        {summary.reasons.map((reason) => (
+          <li key={reason}>{reason}</li>
+        ))}
+      </ul>
+      {results.some((result) => result.level === "Different role") ? (
+        <p className="mt-2 text-amber-900">Other saved jobs from the same company look different enough to continue.</p>
+      ) : null}
+    </div>
+  );
+}
+
 export function JobManager({ databaseConfigured, jobs }: JobManagerProps) {
   const [state, formAction, isPending] = useActionState<JobFormState, FormData>(createJobForm, {});
   const [values, setValues] = useState<JobFormValues>(emptyValues);
   const progress = useMemo(() => jobProgress(values), [values]);
+  const duplicateResults = useMemo(
+    () =>
+      detectDuplicates(
+        {
+          company: values.company,
+          description: values.description,
+          jobUrl: values.jobUrl,
+          location: values.location,
+          title: values.title,
+        },
+        jobs,
+      ),
+    [jobs, values],
+  );
+  const hasEnoughForDuplicateCheck = hasText(values.company) || hasText(values.title) || hasText(values.jobUrl);
 
   function updateValue(key: keyof JobFormValues, value: string) {
     setValues((current) => ({ ...current, [key]: value }));
@@ -222,6 +278,20 @@ export function JobManager({ databaseConfigured, jobs }: JobManagerProps) {
             >
               Use sample description
             </button>
+          </div>
+
+          <div className="mt-5">
+            {hasEnoughForDuplicateCheck ? (
+              <DuplicateWarning results={duplicateResults} />
+            ) : (
+              <div className="rounded-lg border bg-secondary/50 p-4 text-sm leading-6 text-muted-foreground">
+                <div className="flex items-center gap-2 font-medium text-foreground">
+                  <Info aria-hidden="true" className="size-4 text-primary" />
+                  Duplicate check starts as you type
+                </div>
+                <p className="mt-1">Add a company, role, or URL and ACA will compare it with saved jobs.</p>
+              </div>
+            )}
           </div>
 
           <div className="mt-5 grid gap-4 md:grid-cols-2">

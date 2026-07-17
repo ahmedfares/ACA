@@ -32,13 +32,13 @@ export default async function JobsPage() {
           <div className="rounded-lg border bg-background p-4 shadow-sm">
             <div className="flex items-center justify-between text-sm font-medium">
               <span>Week 7 goal</span>
-              <span className="text-primary">Job CRUD ready</span>
+              <span className="text-primary">Duplicates active</span>
             </div>
             <div className="mt-3 h-2 overflow-hidden rounded-full bg-muted">
               <div className="aca-progress-fill h-full w-3/4 rounded-full" />
             </div>
             <p className="mt-3 text-sm leading-6 text-muted-foreground">
-              Save company, title, location, URL, compensation, notes, and description.
+              Save job details and get explainable duplicate checks before adding the same role twice.
             </p>
           </div>
         </div>

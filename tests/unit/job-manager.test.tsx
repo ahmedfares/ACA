@@ -31,4 +31,36 @@ describe("JobManager", () => {
     expect(screen.getByText("Review score").parentElement).toHaveTextContent("4/4");
     expect(screen.getByRole("button", { name: "Save job" })).toBeDisabled();
   });
+
+  it("shows explainable duplicate warnings against saved jobs", () => {
+    render(
+      <JobManager
+        databaseConfigured
+        jobs={[
+          {
+            company: "Acme Cloud",
+            createdAt: new Date("2026-07-17"),
+            description:
+              "Senior Software Engineer role focused on React, TypeScript, PostgreSQL, cloud services, product partnership, and reliable customer experiences.",
+            id: "job-1",
+            jobUrl: "https://jobs.example.com/acme/123?utm_source=linkedin",
+            location: "Remote US",
+            status: "Discovered",
+            title: "Senior Software Engineer",
+            updatedAt: new Date("2026-07-17"),
+          },
+        ]}
+      />,
+    );
+
+    expect(screen.getByText("Duplicate check starts as you type")).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText("Company"), { target: { value: "Acme Cloud Inc." } });
+    fireEvent.change(screen.getByLabelText("Job title"), { target: { value: "Senior Software Engineer" } });
+    fireEvent.change(screen.getByLabelText("Location"), { target: { value: "Remote United States" } });
+
+    expect(screen.getByText(/Probable duplicate/)).toBeInTheDocument();
+    expect(screen.getByText("Same company, title, and location")).toBeInTheDocument();
+    expect(screen.getByText(/Closest match: Acme Cloud - Senior Software Engineer/)).toBeInTheDocument();
+  });
 });
