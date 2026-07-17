@@ -18,7 +18,16 @@ test("protects dashboard and allows demo sign in", async ({ page }) => {
 
   await primaryNav.getByRole("link", { name: "Profile" }).click();
   await expect(page).toHaveURL(/\/profile/);
-  await expect(page.getByRole("heading", { name: "Career profile" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Build momentum in minutes" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Test this in 60 seconds" })).toBeVisible();
   await expect(page.getByLabel("Current title")).toBeVisible();
-  await expect(page.getByRole("button", { name: "Save profile" })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Save progress" })).toBeDisabled();
+
+  await primaryNav.getByRole("link", { name: "Resume" }).click();
+  await expect(page).toHaveURL(/\/resume/);
+  await expect(page.getByRole("heading", { name: "Create your matching base" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Test this in 60 seconds" })).toBeVisible();
+  await page.getByRole("button", { name: "Use sample" }).click();
+  await expect(page.getByLabel("Version label")).toHaveValue("Senior software engineer resume");
+  await expect(page.getByRole("button", { name: "Save resume" })).toBeDisabled();
 });

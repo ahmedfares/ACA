@@ -19,6 +19,7 @@ model User {
   sessions      Session[]
   careerProfile CareerProfile?
   preference    Preference?
+  resumes       Resume[]
   skills        Skill[]
 }
 
@@ -109,4 +110,22 @@ model Skill {
 
   @@unique([userId, name])
   @@index([userId, category])
+}
+
+model Resume {
+  id            String   @id @default(cuid())
+  userId        String
+  label         String
+  fileUrl       String?
+  fileName      String?
+  contentType   String?
+  rawText       String?
+  extractedJson Json?
+  isDefault     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isDefault])
+  @@index([userId, updatedAt])
 }

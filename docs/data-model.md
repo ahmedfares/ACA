@@ -20,7 +20,7 @@
 
 ## Implementation Status
 
-Week 4 implements the first user-owned product data models: `CareerProfile`, `Preference`, and `Skill`, alongside the Auth.js account/session tables from Week 2. Later weeks will add resumes, jobs, scores, questions, applications, review queue items, duplicate matches, and activity events.
+Week 6 implements the first profile and resume product data models: `CareerProfile`, `Preference`, `Skill`, and `Resume`, alongside the Auth.js account/session tables from Week 2. Later weeks will add jobs, scores, questions, applications, review queue items, duplicate matches, and activity events.
 
 ## Ownership Rules
 

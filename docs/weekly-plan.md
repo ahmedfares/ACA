@@ -139,8 +139,29 @@ Week 5 is complete when the profile/onboarding UI is reachable, validation and f
 - Result: paste resume and mark default.
 - Sessions: resume schema/service; resume UI text editor.
 - Files: `src/features/resumes`, `src/app/(app)/resume`.
-- Tests: validation and ownership tests.
+- Tests: `npx prisma generate`, `env DATABASE_URL=postgresql://user:password@localhost:5432/aca npx prisma validate`, `npm audit --audit-level=moderate`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, `npm run test:e2e`.
+- Acceptance: signed-in users can open Resume, paste resume text, see resume readiness feedback, mark a pasted resume as default, and save/list resume versions when `DATABASE_URL` points to PostgreSQL.
+- Push step: commit the Week 6 resume MVP and push `main` to GitHub.
+- Deploy step: still deferred until the server-capable Next.js + PostgreSQL environment is selected.
+- Review step: sign in locally, open `/resume`, use the sample resume, confirm readiness/test checklist updates, and verify saving is gated with a clear preview-mode message when no database is configured.
 - Commit: `feat: add resume management`
+
+### Week 6 Completion Review
+
+Use this checklist to review Week 6:
+
+1. Run `npx prisma generate`.
+2. Run `env DATABASE_URL=postgresql://user:password@localhost:5432/aca npx prisma validate`.
+3. Run `npm audit --audit-level=moderate`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, and `npm run test:e2e`.
+4. Run `npm run dev` and open `http://localhost:3000/resume`.
+5. Sign in with `demo@example.com` / `change-me` unless overridden by environment variables.
+6. Confirm the Resume page shows the paste editor, readiness points, word count, and "Test this in 60 seconds" checklist.
+7. Click "Use sample" and confirm the label, resume text, readiness meter, and checklist update.
+8. Confirm "Use as default" is checked by default.
+9. If `DATABASE_URL` is not configured, confirm the page clearly says preview mode and the save button is disabled.
+10. Once PostgreSQL is configured, save a resume, reload the page, and confirm it appears in Saved resume versions with the Default badge.
+
+Week 6 is complete when the Resume model exists, resume validation and user-scoped repository behavior are tested, the paste/default UI is reachable, all checks pass, and the branch is pushed to GitHub.
 
 ## Week 7: Job CRUD
 

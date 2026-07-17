@@ -20,8 +20,10 @@ describe("ProfileForm", () => {
     );
 
     expect(screen.getByLabelText("Current title")).toHaveValue("Senior Engineer");
-    expect(screen.getByLabelText("Preferred titles")).toHaveValue("Senior Engineer, Staff Engineer");
-    expect(screen.getByText(/saving is disabled/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Save profile" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Senior Engineer" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Staff Engineer" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("heading", { name: "Test this in 60 seconds" })).toBeInTheDocument();
+    expect(screen.getByText(/preview mode/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Save progress" })).toBeDisabled();
   });
 });

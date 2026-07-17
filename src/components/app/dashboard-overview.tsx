@@ -29,7 +29,7 @@ const nextActions = [
   },
   {
     title: "Resume",
-    description: "Store pasted resume text and prepare for matching.",
+    description: "Paste resume text, mark the default, and prepare for matching.",
     href: "/resume",
     icon: FileText,
     status: "Week 6",
