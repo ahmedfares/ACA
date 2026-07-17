@@ -1,4 +1,4 @@
-import { ArrowRight, CheckCircle2, FileText, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, FileText, LockKeyhole, ShieldCheck, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -39,9 +39,18 @@ export default function Home() {
             <div className="mt-6 rounded-lg border bg-card p-4 shadow-sm">
               <p className="text-sm font-medium">Example outcome</p>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                Job: Senior Backend Engineer {"->"} ACA keeps the role, checks for duplicates, and prepares it for
-                the Apply / Review / Skip recommendation coming in the scoring phase.
+                Job: Senior Backend Engineer {"->"} Week 8 checks duplicate risk and saves the clean source record.
+                Week 10 adds the Apply / Review / Skip recommendation with reasons.
               </p>
+            </div>
+            <div className="mt-4 rounded-lg border border-primary/20 bg-primary/5 p-4 shadow-sm">
+              <div className="flex items-start gap-3">
+                <LockKeyhole className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
+                <p className="text-sm leading-6 text-foreground">
+                  Alpha trust rule: paste only data you are comfortable testing. ACA treats profile, resume, and job
+                  text as private source-of-truth inputs for your own workflow.
+                </p>
+              </div>
             </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg" className="gap-2">

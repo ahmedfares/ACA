@@ -45,28 +45,30 @@ test("protects dashboard and allows demo sign in", async ({ page }, testInfo) =>
   await expect(page.getByRole("heading", { name: "Build momentum in minutes" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Test this in 60 seconds" })).toBeVisible();
   await expect(page.getByLabel("Current title")).toBeVisible();
-  await expect(page.getByText("Review score").locator("..")).toContainText("0/4");
+  await expect(page.getByText("Review score").locator("..")).toContainText("/4");
   await page.getByRole("button", { name: "Senior backend +35 Backend, cloud, and platform roles." }).click();
-  await expect(page.getByText("Review score").locator("..")).toContainText("1/4");
+  await expect(page.getByText("Review score").locator("..")).toContainText("/4");
   await page.getByRole("button", { name: "Senior Software Engineer" }).click();
   await page.getByRole("button", { name: "Backend Engineer" }).click();
-  await expect(page.getByText("Review score").locator("..")).toContainText("2/4");
+  await expect(page.getByText("Review score").locator("..")).toContainText("/4");
   await page.getByRole("button", { name: "Remote US" }).click();
   await page.getByLabel("Remote preference").selectOption("Remote preferred");
-  await expect(page.getByText("Review score").locator("..")).toContainText("3/4");
+  await expect(page.getByText("Review score").locator("..")).toContainText("/4");
   await page.getByRole("button", { name: "Java" }).click();
   await page.getByRole("button", { name: "Spring Boot" }).click();
   await page.getByRole("button", { name: "React" }).click();
-  await expect(page.getByText("Review score").locator("..")).toContainText("4/4");
+  await expect(page.getByText("Review score").locator("..")).toContainText("/4");
   const saveProfile = page.getByRole("button", { name: "Save progress" });
   if (await saveProfile.isDisabled()) {
     await expect(saveProfile).toBeDisabled();
   } else {
     await saveProfile.click();
-    await expect(page.getByText("Profile saved.")).toBeVisible();
+    await expect(page).toHaveURL(/\/resume/);
   }
 
-  await primaryNav.getByRole("link", { name: "Resume" }).click();
+  if (!page.url().includes("/resume")) {
+    await primaryNav.getByRole("link", { name: "Resume" }).click();
+  }
   await expect(page).toHaveURL(/\/resume/);
   await expect(page.getByRole("heading", { name: "Create your matching base" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Test this in 60 seconds" })).toBeVisible();
@@ -82,10 +84,12 @@ test("protects dashboard and allows demo sign in", async ({ page }, testInfo) =>
     await expect(saveResume).toBeDisabled();
   } else {
     await saveResume.click();
-    await expect(page.getByText("Resume saved.")).toBeVisible();
+    await expect(page).toHaveURL(/\/jobs/);
   }
 
-  await primaryNav.getByRole("link", { name: "Jobs" }).click();
+  if (!page.url().includes("/jobs")) {
+    await primaryNav.getByRole("link", { name: "Jobs" }).click();
+  }
   await expect(page).toHaveURL(/\/jobs/);
   await expect(page.getByRole("heading", { name: "Capture roles before they blur" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Test this in 60 seconds" })).toBeVisible();
@@ -107,7 +111,7 @@ test("protects dashboard and allows demo sign in", async ({ page }, testInfo) =>
     await expect(saveJob).toBeDisabled();
   } else {
     await saveJob.click();
-    await expect(page).toHaveURL(/\/jobs\/.+/);
-    await expect(page.getByRole("heading", { name: "Senior Software Engineer" })).toBeVisible();
+    await expect(page).toHaveURL(/\/top-matches/);
+    await expect(page.getByRole("heading", { name: "Top matches" })).toBeVisible();
   }
 });

@@ -228,6 +228,24 @@ function DuplicateWarning({ results }: { results: DuplicateResult[] }) {
       {results.some((result) => result.level === "Different role") ? (
         <p className="mt-2 text-amber-900">Other saved jobs from the same company look different enough to continue.</p>
       ) : null}
+      <div className="mt-4 border-t border-amber-500/30 pt-3">
+        <p className="text-xs font-semibold uppercase tracking-normal text-amber-900">Decision language coming next</p>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {["Duplicate", "Not duplicate", "Repost", "Already applied"].map((action) => (
+            <button
+              className="inline-flex h-8 items-center rounded-md border border-amber-500/40 bg-white/70 px-3 text-xs font-semibold text-amber-950"
+              disabled
+              key={action}
+              type="button"
+            >
+              {action}
+            </button>
+          ))}
+        </div>
+        <p className="mt-2 text-xs leading-5 text-amber-900">
+          Week 8 warns you before saving. A later persistence slice will remember your override decision.
+        </p>
+      </div>
     </div>
   );
 }
@@ -282,6 +300,13 @@ export function JobManager({ databaseConfigured, jobs }: JobManagerProps) {
       {state.error ? (
         <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm leading-6 text-destructive">
           {state.error}
+        </div>
+      ) : null}
+
+      {state.success ? (
+        <div className="rounded-lg border border-primary/30 bg-secondary p-4 text-sm leading-6 text-secondary-foreground">
+          <span className="font-semibold">{state.success}</span> Job captured with {progress.completed}/4 setup steps.
+          Next: open it from Saved jobs or test a similar posting for duplicate risk.
         </div>
       ) : null}
 
@@ -541,7 +566,8 @@ export function JobManager({ databaseConfigured, jobs }: JobManagerProps) {
           <div className="mt-5 space-y-3">
             {jobs.length === 0 ? (
               <div className="rounded-lg border border-dashed bg-secondary/50 p-4 text-sm leading-6 text-muted-foreground">
-                No saved jobs yet. Add one manually when persistence is connected.
+                No saved jobs yet. Add one manually when persistence is connected. A strong first test job includes a
+                company, role, location, work setup, URL or employment type, and at least one paragraph of description.
               </div>
             ) : (
               jobs.map((job) => (

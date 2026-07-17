@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { auth } from "@/auth";
@@ -35,8 +36,6 @@ export async function saveResumeForm(_: ResumeFormState, formData: FormData): Pr
     await resumeRepository.ensureUser(session.user);
     await resumeRepository.saveResume(session.user.id, parsed);
     revalidatePath("/resume");
-
-    return { success: "Resume saved." };
   } catch (error) {
     if (error instanceof z.ZodError) {
       return { error: humanizeZodError(error) };
@@ -44,6 +43,8 @@ export async function saveResumeForm(_: ResumeFormState, formData: FormData): Pr
 
     return { error: "Resume could not be saved. Check your database connection and try again." };
   }
+
+  redirect("/jobs");
 }
 
 export async function setDefaultResumeForm(formData: FormData): Promise<void> {

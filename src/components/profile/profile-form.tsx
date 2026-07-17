@@ -469,13 +469,24 @@ function SectionHeader({
   description,
   icon,
   points,
+  priority,
   title,
 }: {
   description: string;
   icon: ReactNode;
   points: string;
+  priority?: "matching" | "optional" | "trust";
   title: string;
 }) {
+  const priorityCopy =
+    priority === "matching"
+      ? "Needed for matching"
+      : priority === "trust"
+        ? "Trust and constraints"
+        : priority === "optional"
+          ? "Optional personalization"
+          : null;
+
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
       <div>
@@ -486,6 +497,11 @@ function SectionHeader({
           <h2 className="text-lg font-semibold tracking-normal">{title}</h2>
         </div>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>
+        {priorityCopy ? (
+          <span className="mt-3 inline-flex h-7 w-fit items-center rounded-md border bg-background px-2.5 text-xs font-semibold text-primary">
+            {priorityCopy}
+          </span>
+        ) : null}
       </div>
       <span className="inline-flex h-8 w-fit items-center rounded-md border bg-background px-3 text-sm font-medium text-primary">
         {points}
@@ -603,6 +619,17 @@ export function ProfileForm({ databaseConfigured, defaults, mode = "profile" }: 
         </div>
       ) : null}
 
+      <div className="rounded-lg border bg-card p-4 text-sm leading-6 shadow-sm">
+        <div className="flex items-center gap-2 font-semibold">
+          <Target aria-hidden="true" className="size-4 text-primary" />
+          Fill the matching-critical fields first
+        </div>
+        <p className="mt-1 text-muted-foreground">
+          Current title, target roles, location, work setup, compensation, authorization, and match skills have the
+          biggest impact on future recommendations. Leadership notes, target companies, and extra instructions can wait.
+        </p>
+      </div>
+
       {state.error ? (
         <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm leading-6 text-destructive">
           {state.error}
@@ -611,7 +638,8 @@ export function ProfileForm({ databaseConfigured, defaults, mode = "profile" }: 
 
       {state.success ? (
         <div className="rounded-lg border border-primary/30 bg-secondary p-4 text-sm leading-6 text-secondary-foreground">
-          {state.success}
+          <span className="font-semibold">{state.success}</span>{" "}
+          {stats.completed}/{stats.total} quick wins are ready. Next: add or refresh your default resume.
         </div>
       ) : null}
 
@@ -630,6 +658,7 @@ export function ProfileForm({ databaseConfigured, defaults, mode = "profile" }: 
           description="Start from a proven path, then tweak only what matters."
           icon={<Sparkles aria-hidden="true" className="size-4" />}
           points="Fast start"
+          priority="optional"
           title="Choose a momentum path"
         />
         <div className="mt-5 grid gap-3 md:grid-cols-3">
@@ -644,6 +673,7 @@ export function ProfileForm({ databaseConfigured, defaults, mode = "profile" }: 
           description="Enough context for ACA to understand who you are and where your search should point."
           icon={<Target aria-hidden="true" className="size-4" />}
           points="+30 pts"
+          priority="matching"
           title="Career basics"
         />
         <div className="mt-5 grid gap-5 md:grid-cols-2">
@@ -702,6 +732,7 @@ export function ProfileForm({ databaseConfigured, defaults, mode = "profile" }: 
           description="These choices help filter noise so your energy goes into roles worth pursuing."
           icon={<Zap aria-hidden="true" className="size-4" />}
           points="+50 pts"
+          priority="trust"
           title="Target roles"
         />
         <div className="mt-5 grid gap-5 md:grid-cols-2">
@@ -813,6 +844,7 @@ export function ProfileForm({ databaseConfigured, defaults, mode = "profile" }: 
           description="Tap the skills you want matched first. You can refine the list anytime."
           icon={<Trophy aria-hidden="true" className="size-4" />}
           points="+20 pts"
+          priority="matching"
           title="Match skills"
         />
         <div className="mt-5 flex flex-wrap gap-2">

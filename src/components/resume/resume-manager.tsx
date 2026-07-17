@@ -136,7 +136,8 @@ export function ResumeManager({ databaseConfigured, resumes }: ResumeManagerProp
 
       {state.success ? (
         <div className="rounded-lg border border-primary/30 bg-secondary p-4 text-sm leading-6 text-secondary-foreground">
-          {state.success}
+          <span className="font-semibold">{state.success}</span> {readiness.words} words captured with{" "}
+          {readiness.sectionsFound}/4 instant signals. Next: add one job and compare duplicate risk.
         </div>
       ) : null}
 
@@ -313,7 +314,8 @@ export function ResumeManager({ databaseConfigured, resumes }: ResumeManagerProp
         <div className="mt-5 space-y-3">
           {resumes.length === 0 ? (
             <div className="rounded-lg border border-dashed bg-background p-5 text-sm leading-6 text-muted-foreground">
-              No saved resumes yet. Paste a resume above when the database is configured.
+              No saved resumes yet. Paste a resume above when the database is configured. A good alpha sample includes
+              experience, skills, education or certifications, and a few impact verbs such as led, built, improved, or delivered.
             </div>
           ) : (
             resumes.map((resume) => (

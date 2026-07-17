@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { auth } from "@/auth";
@@ -39,8 +40,6 @@ export async function saveProfileForm(_: ProfileFormState, formData: FormData): 
 
     revalidatePath("/profile");
     revalidatePath("/onboarding");
-
-    return { success: "Profile saved." };
   } catch (error) {
     if (error instanceof z.ZodError) {
       return { error: humanizeZodError(error) };
@@ -48,4 +47,6 @@ export async function saveProfileForm(_: ProfileFormState, formData: FormData): 
 
     return { error: "Profile could not be saved. Check your database connection and try again." };
   }
+
+  redirect("/resume");
 }

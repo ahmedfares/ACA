@@ -44,6 +44,29 @@ const nextActions = [
   },
 ];
 
+const alphaChecklist = [
+  {
+    detail: "Use chips and dropdowns, then save when the database is connected.",
+    href: "/profile",
+    title: "Complete the must-have profile fields",
+  },
+  {
+    detail: "Paste text first; upload parsing is intentionally later.",
+    href: "/resume",
+    title: "Save a default resume",
+  },
+  {
+    detail: "Paste a role and use Extract obvious details.",
+    href: "/jobs",
+    title: "Capture one job",
+  },
+  {
+    detail: "Re-enter a similar Acme role and confirm the warning is explainable.",
+    href: "/jobs",
+    title: "Test duplicate detection",
+  },
+];
+
 export function DashboardOverview() {
   return (
     <section>
@@ -81,6 +104,33 @@ export function DashboardOverview() {
         <p className="mt-4 text-sm leading-6 text-muted-foreground">
           The next product milestone turns these inputs into an Apply / Review / Skip recommendation.
         </p>
+      </section>
+
+      <section className="mt-8 rounded-lg border bg-card p-5 shadow-sm">
+        <div className="flex items-center gap-3">
+          <ClipboardList className="size-5 text-primary" aria-hidden="true" />
+          <h2 className="text-lg font-semibold tracking-normal">Alpha test checklist</h2>
+        </div>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">
+          Use these four steps to review the full Week 1-8 value loop without expecting Week 9+ scoring yet.
+        </p>
+        <div className="mt-5 grid gap-3 md:grid-cols-2">
+          {alphaChecklist.map((item, index) => (
+            <Link
+              className="rounded-lg border bg-background p-4 transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              href={item.href}
+              key={item.title}
+            >
+              <div className="flex items-center gap-3">
+                <span className="inline-flex size-7 shrink-0 items-center justify-center rounded-md bg-primary text-sm font-semibold text-primary-foreground">
+                  {index + 1}
+                </span>
+                <h3 className="text-sm font-semibold">{item.title}</h3>
+              </div>
+              <p className="mt-3 text-xs leading-5 text-muted-foreground">{item.detail}</p>
+            </Link>
+          ))}
+        </div>
       </section>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

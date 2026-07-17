@@ -47,5 +47,5 @@ export async function createJobForm(_: JobFormState, formData: FormData): Promis
   }
 
   revalidatePath("/jobs");
-  redirect(`/jobs/${jobId}`);
+  redirect(`/top-matches?capturedJobId=${jobId}`);
 }
