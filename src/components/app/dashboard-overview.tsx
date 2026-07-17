@@ -6,6 +6,7 @@ import {
   ClipboardList,
   FileText,
   Sparkles,
+  Target,
   UserRound,
 } from "lucide-react";
 import Link from "next/link";
@@ -13,30 +14,30 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 const metrics = [
-  { label: "Jobs added", value: "0", detail: "Entry and duplicate checks are ready" },
-  { label: "Scored jobs", value: "0", detail: "AI scoring starts in Week 10" },
-  { label: "Review items", value: "0", detail: "Review queue starts in Week 12" },
-  { label: "Applications", value: "0", detail: "Tracking starts in Week 15" },
+  { label: "Setup focus", value: "3", detail: "Profile, resume, and first job" },
+  { label: "Jobs ready", value: "0", detail: "Add roles for duplicate checks" },
+  { label: "Next AI step", value: "W9", detail: "Provider and scoring foundation" },
+  { label: "Alpha goal", value: "5", detail: "Trusted testers after hosted setup" },
 ];
 
 const nextActions = [
   {
     title: "Career profile",
-    description: "The first real product workflow after the app shell.",
+    description: "Tell ACA what jobs are worth your limited energy.",
     href: "/profile",
     icon: UserRound,
     status: "Week 4",
   },
   {
     title: "Resume",
-    description: "Paste resume text, mark the default, and prepare for matching.",
+    description: "Paste the source of truth future scoring should respect.",
     href: "/resume",
     icon: FileText,
     status: "Week 6",
   },
   {
     title: "Jobs",
-    description: "Add roles manually and catch duplicate postings before they drain attention.",
+    description: "Capture roles and catch duplicate postings before they drain attention.",
     href: "/jobs",
     icon: BriefcaseBusiness,
     status: "Week 7",
@@ -48,19 +49,39 @@ export function DashboardOverview() {
     <section>
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
         <div>
-          <p className="text-sm font-medium text-primary">Week 3 app shell</p>
-          <h1 className="mt-2 text-3xl font-semibold tracking-normal">Dashboard</h1>
+          <p className="text-sm font-medium text-primary">Today&apos;s job-search focus</p>
+          <h1 className="mt-2 text-3xl font-semibold tracking-normal">Build the source of truth</h1>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
-            The authenticated workspace is ready. Profile, resume, and manual job capture now build the first source of truth for matching.
+            Finish the three inputs that make ACA better than a one-off chat: your profile, your resume, and the roles you are considering.
           </p>
         </div>
         <Button asChild>
           <Link href="/profile">
-            Next setup step
+            Start with profile
             <ArrowRight className="size-4" aria-hidden="true" />
           </Link>
         </Button>
       </div>
+
+      <section className="mt-8 rounded-lg border bg-card p-5 shadow-sm">
+        <div className="flex items-center gap-3">
+          <Target className="size-5 text-primary" aria-hidden="true" />
+          <h2 className="text-lg font-semibold tracking-normal">First value loop</h2>
+        </div>
+        <div className="mt-5 grid gap-3 md:grid-cols-4">
+          {["Complete profile", "Paste resume", "Add first job", "Check duplicate signals"].map((step, index) => (
+            <div className="rounded-lg border bg-background p-4" key={step}>
+              <div className="flex size-7 items-center justify-center rounded-md bg-primary text-sm font-semibold text-primary-foreground">
+                {index + 1}
+              </div>
+              <p className="mt-3 text-sm font-medium">{step}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-4 text-sm leading-6 text-muted-foreground">
+          The next product milestone turns these inputs into an Apply / Review / Skip recommendation.
+        </p>
+      </section>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {metrics.map((metric) => (

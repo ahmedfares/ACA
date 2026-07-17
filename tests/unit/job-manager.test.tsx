@@ -63,4 +63,25 @@ describe("JobManager", () => {
     expect(screen.getByText("Same company, title, and location")).toBeInTheDocument();
     expect(screen.getByText(/Closest match: Acme Cloud - Senior Software Engineer/)).toBeInTheDocument();
   });
+
+  it("extracts obvious job details from pasted descriptions without overwriting filled fields", () => {
+    render(<JobManager databaseConfigured={false} jobs={[]} />);
+
+    fireEvent.change(screen.getByLabelText("Company"), { target: { value: "Already Set" } });
+    fireEvent.change(screen.getByLabelText("Job description"), {
+      target: {
+        value:
+          "Job: Senior Platform Engineer\nCompany: Acme Cloud\nLocation: Remote US\nThis is a full-time remote role paying $140,000-$190,000 for platform engineering and reliable developer tooling.",
+      },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Extract obvious details" }));
+
+    expect(screen.getByLabelText("Company")).toHaveValue("Already Set");
+    expect(screen.getByLabelText("Job title")).toHaveValue("Senior Platform Engineer");
+    expect(screen.getByLabelText("Location")).toHaveValue("Remote US");
+    expect(screen.getByLabelText("Remote setup")).toHaveValue("Remote");
+    expect(screen.getByLabelText("Employment type")).toHaveValue("Full-time");
+    expect(screen.getByLabelText("Salary min")).toHaveValue(140000);
+    expect(screen.getByLabelText("Salary max")).toHaveValue(190000);
+  });
 });

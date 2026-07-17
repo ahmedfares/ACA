@@ -7,7 +7,9 @@ export default function TopMatchesPage() {
     <EmptyState
       icon={Sparkles}
       title="Top matches"
-      description="Ranked matches will appear here after job scoring is implemented. Hard criteria and top-10 ranking come in the matching phase."
+      status="Planned Week 11"
+      description="This page is intentionally paused during the Week 8 alpha. Add jobs now; ranked Apply / Review / Skip recommendations arrive after the Week 9-10 scoring foundation."
+      primaryAction={{ href: "/jobs", label: "Add jobs first" }}
     />
   );
 }

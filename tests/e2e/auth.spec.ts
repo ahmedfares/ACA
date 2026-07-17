@@ -34,7 +34,7 @@ test("protects dashboard and allows demo sign in", async ({ page }, testInfo) =>
   await page.getByRole("button", { name: "Sign in" }).click();
 
   await expect(page).toHaveURL(/\/dashboard/);
-  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Build the source of truth" })).toBeVisible();
   const primaryNav = page.getByRole("navigation", { name: "Primary" }).first();
   await expect(primaryNav).toBeVisible();
   await expect(primaryNav.getByRole("link", { name: "Profile" })).toBeVisible();

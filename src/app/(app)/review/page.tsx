@@ -7,7 +7,9 @@ export default function ReviewPage() {
     <EmptyState
       icon={ClipboardList}
       title="Review queue"
-      description="Low-confidence answers, duplicate decisions, and missing information will land here once the review queue module is built."
+      status="Planned Week 12"
+      description="Nothing is broken here: review decisions come after scoring and question memory. For Week 8, use Jobs to capture roles and understand duplicate signals."
+      primaryAction={{ href: "/jobs", label: "Review duplicate signals" }}
     />
   );
 }

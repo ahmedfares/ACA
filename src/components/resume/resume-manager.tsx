@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useMemo, useState } from "react";
-import { CheckCircle2, FileText, MousePointerClick, Star, Trophy, Zap } from "lucide-react";
+import { CheckCircle2, FileText, Lightbulb, LockKeyhole, MousePointerClick, Star, Trophy, Zap } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { saveResumeForm, setDefaultResumeForm, type ResumeFormState } from "@/features/resumes/actions";
@@ -34,19 +34,20 @@ function formatDate(value: Date | string) {
 
 function resumeReadiness(rawText: string) {
   const words = countResumeWords(rawText);
-  const sections = [
-    /experience|work history|employment/i.test(rawText),
-    /skill|technology|tools/i.test(rawText),
-    /education|certification|degree/i.test(rawText),
-    /led|built|improved|launched|delivered|owned/i.test(rawText),
+  const checks = [
+    { found: /experience|work history|employment/i.test(rawText), label: "Experience section" },
+    { found: /skill|technology|tools|java|react|typescript|postgresql|aws|python|spring/i.test(rawText), label: "Skills or tools" },
+    { found: /education|certification|degree/i.test(rawText), label: "Education or certifications" },
+    { found: /led|built|improved|launched|delivered|owned/i.test(rawText), label: "Impact verbs" },
   ];
-  const sectionPoints = sections.filter(Boolean).length * 15;
+  const sectionPoints = checks.filter((check) => check.found).length * 15;
   const wordPoints = Math.min(40, Math.floor(words / 12) * 5);
 
   return {
+    checks,
     percent: Math.min(100, sectionPoints + wordPoints),
     points: Math.min(100, sectionPoints + wordPoints),
-    sectionsFound: sections.filter(Boolean).length,
+    sectionsFound: checks.filter((check) => check.found).length,
     words,
   };
 }
@@ -139,6 +140,16 @@ export function ResumeManager({ databaseConfigured, resumes }: ResumeManagerProp
         </div>
       ) : null}
 
+      <div className="rounded-lg border bg-card p-4 text-sm leading-6 shadow-sm">
+        <div className="flex items-center gap-2 font-semibold">
+          <LockKeyhole aria-hidden="true" className="size-4 text-primary" />
+          Your resume is sensitive
+        </div>
+        <p className="mt-1 text-muted-foreground">
+          Paste only what you are comfortable testing. ACA uses this as your source of truth for future matching and should never invent experience from it.
+        </p>
+      </div>
+
       <section className="rounded-lg border bg-card p-5 shadow-sm">
         <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_220px]">
           <div>
@@ -172,6 +183,32 @@ export function ResumeManager({ databaseConfigured, resumes }: ResumeManagerProp
       </section>
 
       <TestGuide hasLabel={label.trim().length > 0} hasText={hasResumeText} isDefault={isDefault} />
+
+      <section className="rounded-lg border bg-card p-5 shadow-sm">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex size-8 items-center justify-center rounded-md bg-secondary text-primary">
+            <Lightbulb aria-hidden="true" className="size-4" />
+          </span>
+          <h2 className="text-lg font-semibold tracking-normal">Instant resume signals</h2>
+        </div>
+        <div className="mt-4 grid gap-2 sm:grid-cols-4">
+          {readiness.checks.map((check) => (
+            <div
+              className={cn(
+                "flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium transition-all duration-300",
+                check.found ? "aca-complete-pop border-primary/30 bg-primary/5" : "bg-background text-muted-foreground",
+              )}
+              key={check.label}
+            >
+              <CheckCircle2 aria-hidden="true" className={cn("size-4", check.found ? "text-primary" : "text-muted-foreground")} />
+              {check.label}
+            </div>
+          ))}
+        </div>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">
+          These are simple checks, not AI scoring. They help you see whether the pasted resume has enough signal for future matching.
+        </p>
+      </section>
 
       <form action={formAction} className="rounded-lg border bg-card p-5 shadow-sm">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">

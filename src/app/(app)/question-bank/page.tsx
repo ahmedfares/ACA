@@ -7,7 +7,9 @@ export default function QuestionBankPage() {
     <EmptyState
       icon={FileQuestion}
       title="Question bank"
-      description="Approved reusable answers will be managed here after the question memory workflow is implemented."
+      status="Planned Week 13"
+      description="Approved reusable answers are not part of the Week 8 alpha. Build your profile and resume first so future answers stay truthful and grounded."
+      primaryAction={{ href: "/profile", label: "Strengthen profile context" }}
     />
   );
 }

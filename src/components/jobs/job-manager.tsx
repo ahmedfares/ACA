@@ -14,6 +14,7 @@ import {
   ShieldCheck,
   Sparkles,
   TriangleAlert,
+  WandSparkles,
   Zap,
 } from "lucide-react";
 import Link from "next/link";
@@ -75,6 +76,52 @@ const emptyValues: JobFormValues = {
 };
 
 const sampleDescription = `Senior Software Engineer role focused on building reliable product experiences with React, TypeScript, Node.js, PostgreSQL, and cloud services. The team needs someone who can own features end to end, improve system quality, partner with product managers, and communicate tradeoffs clearly. Experience with API design, testing, performance work, and pragmatic architecture decisions is valuable.`;
+
+function extractJobHints(description: string): Partial<JobFormValues> {
+  const lines = description
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const joined = description.replace(/\s+/g, " ");
+  const firstLine = lines[0] ?? "";
+  const lineValue = (label: string) => {
+    const match = lines.find((line) => new RegExp(`^${label}\\s*:`, "i").test(line));
+
+    return match?.replace(new RegExp(`^${label}\\s*:\\s*`, "i"), "").trim();
+  };
+  const title =
+    lineValue("job") ??
+    lineValue("role") ??
+    lineValue("position") ??
+    firstLine.match(/^([A-Z][A-Za-z0-9 /,+#.&-]{3,80})$/)?.[1]?.trim();
+  const salaryMatch = joined.match(/\$?(\d{2,3}),?000\s*(?:-|to|–)\s*\$?(\d{2,3}),?000/i);
+  const remoteStatus = /\bremote\b/i.test(joined)
+    ? "Remote"
+    : /\bhybrid\b/i.test(joined)
+      ? "Hybrid"
+      : /\bon[- ]?site\b/i.test(joined)
+        ? "On-site"
+        : "";
+  const employmentType = /\bcontract\b/i.test(joined)
+    ? "Contract"
+    : /\bpart[- ]time\b/i.test(joined)
+      ? "Part-time"
+      : /\bintern\b/i.test(joined)
+        ? "Internship"
+        : /\bfull[- ]time\b/i.test(joined)
+          ? "Full-time"
+          : "";
+
+  return {
+    company: lineValue("company") ?? lineValue("employer") ?? lineValue("team"),
+    employmentType,
+    location: lineValue("location") ?? lineValue("work location") ?? (remoteStatus === "Remote" ? "Remote" : undefined),
+    remoteStatus,
+    salaryMax: salaryMatch?.[2] ? `${salaryMatch[2]}000` : undefined,
+    salaryMin: salaryMatch?.[1] ? `${salaryMatch[1]}000` : undefined,
+    title,
+  };
+}
 
 function hasText(value: string) {
   return value.trim().length > 0;
@@ -209,6 +256,21 @@ export function JobManager({ databaseConfigured, jobs }: JobManagerProps) {
     setValues((current) => ({ ...current, [key]: value }));
   }
 
+  function applyDescriptionHints() {
+    const hints = extractJobHints(values.description);
+
+    setValues((current) => ({
+      ...current,
+      company: current.company || hints.company || "",
+      employmentType: current.employmentType || hints.employmentType || "",
+      location: current.location || hints.location || "",
+      remoteStatus: current.remoteStatus || hints.remoteStatus || "",
+      salaryMax: current.salaryMax || hints.salaryMax || "",
+      salaryMin: current.salaryMin || hints.salaryMin || "",
+      title: current.title || hints.title || "",
+    }));
+  }
+
   return (
     <div className="space-y-6">
       {!databaseConfigured ? (
@@ -273,7 +335,12 @@ export function JobManager({ databaseConfigured, jobs }: JobManagerProps) {
             </div>
             <button
               className="inline-flex h-9 w-fit items-center rounded-md border border-input bg-background px-3 text-sm font-medium transition-colors hover:border-primary/40 hover:bg-secondary"
-              onClick={() => updateValue("description", sampleDescription)}
+              onClick={() =>
+                setValues((current) => ({
+                  ...current,
+                  description: sampleDescription,
+                }))
+              }
               type="button"
             >
               Use sample description
@@ -419,9 +486,20 @@ export function JobManager({ databaseConfigured, jobs }: JobManagerProps) {
           </div>
 
           <div className="mt-4 space-y-2">
-            <label className="text-sm font-medium" htmlFor="description">
-              Job description
-            </label>
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <label className="text-sm font-medium" htmlFor="description">
+                Job description
+              </label>
+              <button
+                className="inline-flex h-8 w-fit items-center gap-2 rounded-md border border-input bg-background px-3 text-xs font-medium transition-colors hover:border-primary/40 hover:bg-secondary disabled:opacity-50"
+                disabled={values.description.trim().length < 40}
+                onClick={applyDescriptionHints}
+                type="button"
+              >
+                <WandSparkles aria-hidden="true" className="size-3.5" />
+                Extract obvious details
+              </button>
+            </div>
             <textarea
               className="min-h-44 w-full rounded-md border border-input bg-background px-3 py-2 text-sm leading-6 outline-none focus-visible:ring-2 focus-visible:ring-ring"
               id="description"

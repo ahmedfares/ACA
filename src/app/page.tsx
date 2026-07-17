@@ -4,10 +4,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 const productPillars = [
-  "Rank your best-fit jobs",
-  "Tailor truthful applications",
-  "Reuse approved answers",
-  "Avoid duplicate submissions",
+  "Paste a job from anywhere",
+  "Keep your profile and resume context ready",
+  "Catch duplicate roles before you waste effort",
+  "Prepare for fit scoring and truthful tailoring",
 ];
 
 export default function Home() {
@@ -28,14 +28,21 @@ export default function Home() {
 
         <div className="grid flex-1 items-center gap-12 py-16 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="max-w-2xl">
-            <p className="mb-4 text-sm font-medium text-primary">Phase 1 MVP foundation</p>
+            <p className="mb-4 text-sm font-medium text-primary">Quality-first job search assistant</p>
             <h1 className="max-w-2xl text-4xl font-semibold leading-tight tracking-normal text-foreground sm:text-5xl">
-              Find better-fit jobs and apply with more care.
+              Know which jobs deserve your energy.
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-muted-foreground">
-              ACA helps you compare roles against your real career profile, generate credible
-              application material, remember your best answers, and prevent duplicate applications.
+              ACA helps you turn profile, resume, and job posts into a calmer workflow: capture the role,
+              avoid duplicates, then move toward fit scoring and truthful applications.
             </p>
+            <div className="mt-6 rounded-lg border bg-card p-4 shadow-sm">
+              <p className="text-sm font-medium">Example outcome</p>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                Job: Senior Backend Engineer {"->"} ACA keeps the role, checks for duplicates, and prepares it for
+                the Apply / Review / Skip recommendation coming in the scoring phase.
+              </p>
+            </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg" className="gap-2">
                 <Link href="/dashboard">
@@ -71,8 +78,8 @@ export default function Home() {
               <div className="flex items-start gap-3">
                 <FileText className="mt-0.5 size-5 shrink-0 text-accent-foreground" aria-hidden="true" />
                 <p className="text-sm leading-6 text-secondary-foreground">
-                  Week 1 creates the application shell and tooling. Profile, resume, jobs, AI
-                  scoring, and tracking arrive in later scoped sessions.
+                  Week 8 alpha scope: profile, resume, manual jobs, and duplicate checks. AI fit
+                  recommendations come next, after the source of truth is clean.
                 </p>
               </div>
             </div>

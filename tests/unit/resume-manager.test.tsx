@@ -14,6 +14,8 @@ describe("ResumeManager", () => {
 
     expect(screen.getByRole("heading", { name: "Default resume editor" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Test this in 60 seconds" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Instant resume signals" })).toBeInTheDocument();
+    expect(screen.getByText("Your resume is sensitive")).toBeInTheDocument();
     expect(screen.getByText("Review score")).toBeInTheDocument();
     expect(screen.getByText("0 saved")).toBeInTheDocument();
     expect(screen.getByText("Upload PDF/DOCX later")).toBeDisabled();
@@ -25,6 +27,8 @@ describe("ResumeManager", () => {
     expect((screen.getByLabelText("Resume text") as HTMLTextAreaElement).value).toContain(
       "Senior Software Engineer",
     );
+    expect(screen.getByText("Experience section").closest("div")).toHaveClass("border-primary/30");
+    expect(screen.getByText("Skills or tools").closest("div")).toHaveClass("border-primary/30");
     expect(screen.getByText("Review score").parentElement).toHaveTextContent("1/3");
     fireEvent.change(screen.getByLabelText("Version label"), { target: { value: "Senior software engineer resume" } });
     expect(screen.getByText("Review score").parentElement).toHaveTextContent("2/3");

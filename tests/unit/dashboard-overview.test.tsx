@@ -7,10 +7,10 @@ describe("DashboardOverview", () => {
   it("renders the Week 3 dashboard shell and next actions", () => {
     render(<DashboardOverview />);
 
-    expect(screen.getByRole("heading", { name: "Dashboard" })).toBeInTheDocument();
-    expect(screen.getByText("Week 3 app shell")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /next setup step/i })).toHaveAttribute("href", "/profile");
-    expect(screen.getByText("Jobs added")).toBeInTheDocument();
-    expect(screen.getByText("Review items")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Build the source of truth" })).toBeInTheDocument();
+    expect(screen.getByText("Today's job-search focus")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /start with profile/i })).toHaveAttribute("href", "/profile");
+    expect(screen.getByText("First value loop")).toBeInTheDocument();
+    expect(screen.getByText("Add first job")).toBeInTheDocument();
   });
 });
