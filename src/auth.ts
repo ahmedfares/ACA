@@ -2,6 +2,8 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
 
+import { alphaAuthUsersFromEnv } from "@/lib/alpha-auth";
+
 const credentialsSchema = z.object({
   email: z.string().email(),
   password: z.string().min(1),
@@ -44,23 +46,20 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           return null;
         }
 
-        const expectedEmail =
-          process.env.DEV_AUTH_EMAIL ?? (process.env.NODE_ENV === "production" ? undefined : "demo@example.com");
-        const expectedPassword =
-          process.env.DEV_AUTH_PASSWORD ?? (process.env.NODE_ENV === "production" ? undefined : "change-me");
+        const alphaUser = alphaAuthUsersFromEnv().find((user) => user.email === parsed.data.email.toLocaleLowerCase());
 
-        if (!expectedEmail || !expectedPassword) {
+        if (!alphaUser) {
           return null;
         }
 
-        if (parsed.data.email !== expectedEmail || parsed.data.password !== expectedPassword) {
+        if (parsed.data.password !== alphaUser.password) {
           return null;
         }
 
         return {
-          id: "dev-user",
-          email: expectedEmail,
-          name: "Demo User",
+          id: alphaUser.id,
+          email: alphaUser.email,
+          name: alphaUser.name,
         };
       },
     }),

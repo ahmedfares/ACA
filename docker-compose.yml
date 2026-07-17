@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: aca-postgres
+    environment:
+      POSTGRES_DB: aca
+      POSTGRES_PASSWORD: aca
+      POSTGRES_USER: aca
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aca -d aca"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5433:5432"
+    volumes:
+      - aca-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  aca-postgres-data:

@@ -40,19 +40,35 @@ For GitHub-connected Cloudflare deployment:
 ## Required Environment Variables
 
 ```bash
-DATABASE_URL=
+DATABASE_URL=postgresql://aca:aca@localhost:5433/aca?schema=public
 AUTH_SECRET=
 AUTH_URL=
+AUTH_TRUST_HOST=true
+DEV_AUTH_EMAIL=demo@example.com
+DEV_AUTH_PASSWORD=change-me
+ALPHA_AUTH_USERS=[{"email":"tester1@example.com","password":"change-me-1","name":"Tester One"}]
 OPENAI_API_KEY=
 AI_PROVIDER=openai
 AI_MODEL=
 FILE_STORAGE_PROVIDER=
 ```
 
+For local alpha rehearsal:
+
+```bash
+npm run db:up
+npm run db:migrate
+npm run db:seed
+npm run dev
+```
+
+For hosted alpha, use a managed PostgreSQL database, set a strong `AUTH_SECRET`, set `AUTH_URL` to the deployed URL, and prefer `ALPHA_AUTH_USERS` with one credential per tester over shared demo credentials.
+
 ## Deployment Checklist
 
 - production database created
 - migrations applied
+- distinct alpha tester credentials configured
 - secrets configured
 - Auth.js URL configured
 - AI key configured with budget controls

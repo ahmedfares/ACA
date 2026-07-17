@@ -48,3 +48,16 @@ The product principle is quality over volume:
 Create the Next.js TypeScript app skeleton with strict linting, Tailwind, shadcn/ui, Prisma, Auth.js dependencies, env validation, and initial documentation links.
 
 See [weekly plan](docs/weekly-plan.md) and [roadmap](docs/roadmap.md).
+
+## Local Alpha Setup
+
+```bash
+npm install
+cp .env.example .env.local
+npm run db:up
+npm run db:migrate
+npm run db:seed
+npm run dev
+```
+
+The default local sign-in is `demo@example.com` / `change-me`. For small alpha tests, set `ALPHA_AUTH_USERS` to a JSON array of distinct tester credentials so each tester gets a separate user id.

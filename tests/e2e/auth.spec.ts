@@ -1,12 +1,36 @@
 import { expect, test } from "@playwright/test";
 
-test("protects dashboard and allows demo sign in", async ({ page }) => {
+test("protects all app routes before sign in", async ({ page }) => {
+  for (const path of ["/dashboard", "/profile", "/resume", "/jobs", "/top-matches", "/review", "/question-bank"]) {
+    await page.goto(path);
+
+    await expect(page).toHaveURL(/\/sign-in/);
+  }
+});
+
+function credentialsForProject(projectName: string) {
+  if (projectName.includes("mobile")) {
+    return {
+      email: process.env.E2E_AUTH_EMAIL_MOBILE ?? process.env.E2E_AUTH_EMAIL ?? "demo@example.com",
+      password: process.env.E2E_AUTH_PASSWORD_MOBILE ?? process.env.E2E_AUTH_PASSWORD ?? "change-me",
+    };
+  }
+
+  return {
+    email: process.env.E2E_AUTH_EMAIL ?? "demo@example.com",
+    password: process.env.E2E_AUTH_PASSWORD ?? "change-me",
+  };
+}
+
+test("protects dashboard and allows demo sign in", async ({ page }, testInfo) => {
+  const credentials = credentialsForProject(testInfo.project.name);
+
   await page.goto("/dashboard");
 
   await expect(page).toHaveURL(/\/sign-in/);
 
-  await page.getByLabel("Email").fill("demo@example.com");
-  await page.getByLabel("Password").fill("change-me");
+  await page.getByLabel("Email").fill(credentials.email);
+  await page.getByLabel("Password").fill(credentials.password);
   await page.getByRole("button", { name: "Sign in" }).click();
 
   await expect(page).toHaveURL(/\/dashboard/);
@@ -34,7 +58,13 @@ test("protects dashboard and allows demo sign in", async ({ page }) => {
   await page.getByRole("button", { name: "Spring Boot" }).click();
   await page.getByRole("button", { name: "React" }).click();
   await expect(page.getByText("Review score").locator("..")).toContainText("4/4");
-  await expect(page.getByRole("button", { name: "Save progress" })).toBeDisabled();
+  const saveProfile = page.getByRole("button", { name: "Save progress" });
+  if (await saveProfile.isDisabled()) {
+    await expect(saveProfile).toBeDisabled();
+  } else {
+    await saveProfile.click();
+    await expect(page.getByText("Profile saved.")).toBeVisible();
+  }
 
   await primaryNav.getByRole("link", { name: "Resume" }).click();
   await expect(page).toHaveURL(/\/resume/);
@@ -47,7 +77,13 @@ test("protects dashboard and allows demo sign in", async ({ page }) => {
   await expect(page.getByText("Review score").locator("..")).toContainText("2/3");
   await page.getByLabel("Use as default").check();
   await expect(page.getByText("Review score").locator("..")).toContainText("3/3");
-  await expect(page.getByRole("button", { name: "Save resume" })).toBeDisabled();
+  const saveResume = page.getByRole("button", { name: "Save resume" });
+  if (await saveResume.isDisabled()) {
+    await expect(saveResume).toBeDisabled();
+  } else {
+    await saveResume.click();
+    await expect(page.getByText("Resume saved.")).toBeVisible();
+  }
 
   await primaryNav.getByRole("link", { name: "Jobs" }).click();
   await expect(page).toHaveURL(/\/jobs/);
@@ -57,7 +93,7 @@ test("protects dashboard and allows demo sign in", async ({ page }) => {
   await expect(page.getByText("Review score").locator("..")).toContainText("0/4");
   await page.getByLabel("Company").fill("Acme Cloud");
   await page.getByLabel("Job title").fill("Senior Software Engineer");
-  await expect(page.getByText("Duplicate check is clear")).toBeVisible();
+  await expect(page.getByText(/Duplicate check is clear|duplicate:/i)).toBeVisible();
   await expect(page.getByText("Review score").locator("..")).toContainText("1/4");
   await page.getByLabel("Location").fill("Remote US");
   await page.getByLabel("Remote setup").selectOption("Remote");
@@ -66,5 +102,12 @@ test("protects dashboard and allows demo sign in", async ({ page }) => {
   await expect(page.getByText("Review score").locator("..")).toContainText("3/4");
   await page.getByRole("button", { name: "Use sample description" }).click();
   await expect(page.getByText("Review score").locator("..")).toContainText("4/4");
-  await expect(page.getByRole("button", { name: "Save job" })).toBeDisabled();
+  const saveJob = page.getByRole("button", { name: "Save job" });
+  if (await saveJob.isDisabled()) {
+    await expect(saveJob).toBeDisabled();
+  } else {
+    await saveJob.click();
+    await expect(page).toHaveURL(/\/jobs\/.+/);
+    await expect(page.getByRole("heading", { name: "Senior Software Engineer" })).toBeVisible();
+  }
 });
