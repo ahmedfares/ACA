@@ -48,4 +48,21 @@ test("protects dashboard and allows demo sign in", async ({ page }) => {
   await page.getByLabel("Use as default").check();
   await expect(page.getByText("Review score").locator("..")).toContainText("3/3");
   await expect(page.getByRole("button", { name: "Save resume" })).toBeDisabled();
+
+  await primaryNav.getByRole("link", { name: "Jobs" }).click();
+  await expect(page).toHaveURL(/\/jobs/);
+  await expect(page.getByRole("heading", { name: "Capture roles before they blur" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Test this in 60 seconds" })).toBeVisible();
+  await expect(page.getByText("Review score").locator("..")).toContainText("0/4");
+  await page.getByLabel("Company").fill("Acme Cloud");
+  await page.getByLabel("Job title").fill("Senior Software Engineer");
+  await expect(page.getByText("Review score").locator("..")).toContainText("1/4");
+  await page.getByLabel("Location").fill("Remote US");
+  await page.getByLabel("Remote setup").selectOption("Remote");
+  await expect(page.getByText("Review score").locator("..")).toContainText("2/4");
+  await page.getByLabel("Employment type").selectOption("Full-time");
+  await expect(page.getByText("Review score").locator("..")).toContainText("3/4");
+  await page.getByRole("button", { name: "Use sample description" }).click();
+  await expect(page.getByText("Review score").locator("..")).toContainText("4/4");
+  await expect(page.getByRole("button", { name: "Save job" })).toBeDisabled();
 });

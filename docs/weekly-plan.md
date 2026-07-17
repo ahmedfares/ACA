@@ -167,9 +167,32 @@ Week 6 is complete when the Resume model exists, resume validation and user-scop
 
 - Result: user can add/list/view jobs.
 - Sessions: job schema/service; add job form and list.
-- Files: `src/features/jobs`, `src/app/(app)/jobs`.
-- Tests: job validation tests.
+- Files: `prisma/schema.prisma`, `prisma/migrations`, `src/features/jobs`, `src/components/jobs`, `src/app/(app)/jobs`.
+- Tests: `npx prisma generate`, `env DATABASE_URL=postgresql://user:password@localhost:5432/aca npx prisma validate`, `npm audit --audit-level=moderate`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, `npm run test:e2e`.
+- Acceptance: signed-in users can open Jobs, add manual job details, see a real 0/4 interaction checklist, list saved jobs, and view a job detail page when `DATABASE_URL` points to PostgreSQL.
+- Push step: commit the Week 7 manual job management slice and push `main` to GitHub.
+- Deploy step: still deferred until the server-capable Next.js + PostgreSQL environment is selected; use local preview mode for form testing without persistence.
+- Review step: sign in locally, open `/jobs`, fill company/title, location/remote setup, employment type or URL, then description, and confirm the review score moves 0/4 to 4/4 one step at a time.
 - Commit: `feat: add manual job management`
+
+### Week 7 Completion Review
+
+Use this checklist to review Week 7:
+
+1. Run `npx prisma generate`.
+2. Run `env DATABASE_URL=postgresql://user:password@localhost:5432/aca npx prisma validate`.
+3. Run `npm audit --audit-level=moderate`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, and `npm run test:e2e`.
+4. Run `npm run dev` and open `http://localhost:3000/jobs`.
+5. Sign in with `demo@example.com` / `change-me` unless overridden by environment variables.
+6. Confirm the Jobs page shows preview mode when no `DATABASE_URL` is configured.
+7. Fill Company and Job title, then confirm the checklist moves to `1/4`.
+8. Fill Location and Remote setup, then confirm the checklist moves to `2/4`.
+9. Fill Employment type or Job URL, then confirm the checklist moves to `3/4`.
+10. Click "Use sample description" or paste a real description, then confirm the checklist moves to `4/4`.
+11. If `DATABASE_URL` is not configured, confirm the Save job button is disabled.
+12. Once PostgreSQL is configured, save a job, reload `/jobs`, confirm it appears in Saved jobs, and open the job detail page.
+
+Week 7 is complete when the Job model exists, job validation and user-scoped repository behavior are tested, the add/list/view UI is reachable, all checks pass, and the branch is pushed to GitHub.
 
 ## Week 8: Duplicate Detection
 

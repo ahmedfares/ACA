@@ -13,7 +13,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 const metrics = [
-  { label: "Jobs added", value: "0", detail: "Manual job entry starts in Week 7" },
+  { label: "Jobs added", value: "0", detail: "Manual job entry is ready" },
   { label: "Scored jobs", value: "0", detail: "AI scoring starts in Week 10" },
   { label: "Review items", value: "0", detail: "Review queue starts in Week 12" },
   { label: "Applications", value: "0", detail: "Tracking starts in Week 15" },
@@ -36,7 +36,7 @@ const nextActions = [
   },
   {
     title: "Jobs",
-    description: "Manual job entry and duplicate checks come next.",
+    description: "Add roles manually so matching and duplicate checks have a source list.",
     href: "/jobs",
     icon: BriefcaseBusiness,
     status: "Week 7",
@@ -51,8 +51,7 @@ export function DashboardOverview() {
           <p className="text-sm font-medium text-primary">Week 3 app shell</p>
           <h1 className="mt-2 text-3xl font-semibold tracking-normal">Dashboard</h1>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
-            The authenticated workspace is ready. The counters are intentionally empty until the
-            profile, resume, job, scoring, and application modules arrive in later slices.
+            The authenticated workspace is ready. Profile, resume, and manual job capture now build the first source of truth for matching.
           </p>
         </div>
         <Button asChild>
@@ -118,7 +117,7 @@ export function DashboardOverview() {
             <div className="flex gap-3">
               <AlertCircle className="mt-0.5 size-5 shrink-0 text-accent-foreground" aria-hidden="true" />
               <p className="text-sm leading-6 text-muted-foreground">
-                Product data modules are placeholders until their planned weeks.
+                Scoring, duplicate detection, review queues, and applications remain planned for later slices.
               </p>
             </div>
           </div>
