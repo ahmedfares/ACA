@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useActionState, useMemo, useState } from "react";
+import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import { Check, CheckCircle2, Flame, MousePointerClick, Sparkles, Target, Trophy, Zap } from "lucide-react";
 
 import { saveProfileForm, type ProfileFormState } from "@/features/profile/actions";
@@ -583,9 +583,19 @@ function SuggestionButton({ onApply, preset }: { onApply: (preset: SuggestionPre
 
 export function ProfileForm({ databaseConfigured, defaults, mode = "profile" }: ProfileFormProps) {
   const [state, formAction, isPending] = useActionState<ProfileFormState, FormData>(saveProfileForm, {});
+  const errorRef = useRef<HTMLDivElement>(null);
   const [values, setValues] = useState<ProfileFormValues>(() => normalizeDefaults(defaults));
   const [starterApplied, setStarterApplied] = useState(false);
   const stats = completionStats(values);
+
+  useEffect(() => {
+    if (!state.error) {
+      return;
+    }
+
+    errorRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    errorRef.current?.focus({ preventScroll: true });
+  }, [state.error]);
 
   function updateValue(name: keyof ProfileFormDefaults, value: string) {
     setValues((current) => ({ ...current, [name]: value }));
@@ -631,7 +641,12 @@ export function ProfileForm({ databaseConfigured, defaults, mode = "profile" }: 
       </div>
 
       {state.error ? (
-        <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm leading-6 text-destructive">
+        <div
+          className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm leading-6 text-destructive"
+          ref={errorRef}
+          role="alert"
+          tabIndex={-1}
+        >
           {state.error}
         </div>
       ) : null}

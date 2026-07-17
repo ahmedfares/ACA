@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useMemo, useState } from "react";
+import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import { CheckCircle2, FileText, Lightbulb, LockKeyhole, MousePointerClick, Star, Trophy, Zap } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -110,11 +110,21 @@ function TestGuide({ hasLabel, hasText, isDefault }: { hasLabel: boolean; hasTex
 
 export function ResumeManager({ databaseConfigured, resumes }: ResumeManagerProps) {
   const [state, formAction, isPending] = useActionState<ResumeFormState, FormData>(saveResumeForm, {});
+  const errorRef = useRef<HTMLDivElement>(null);
   const [label, setLabel] = useState("");
   const [rawText, setRawText] = useState("");
   const [isDefault, setIsDefault] = useState(false);
   const readiness = useMemo(() => resumeReadiness(rawText), [rawText]);
   const hasResumeText = rawText.trim().length >= 120;
+
+  useEffect(() => {
+    if (!state.error) {
+      return;
+    }
+
+    errorRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    errorRef.current?.focus({ preventScroll: true });
+  }, [state.error]);
 
   function useSample() {
     setRawText(sampleResumeText);
@@ -129,7 +139,12 @@ export function ResumeManager({ databaseConfigured, resumes }: ResumeManagerProp
       ) : null}
 
       {state.error ? (
-        <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm leading-6 text-destructive">
+        <div
+          className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm leading-6 text-destructive"
+          ref={errorRef}
+          role="alert"
+          tabIndex={-1}
+        >
           {state.error}
         </div>
       ) : null}

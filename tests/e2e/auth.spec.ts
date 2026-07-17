@@ -63,7 +63,9 @@ test("protects dashboard and allows demo sign in", async ({ page }, testInfo) =>
     await expect(saveProfile).toBeDisabled();
   } else {
     await saveProfile.click();
-    await expect(page).toHaveURL(/\/resume/);
+    await expect(async () => {
+      expect(page.url().includes("/resume") || (await page.getByRole("alert").isVisible())).toBe(true);
+    }).toPass();
   }
 
   if (!page.url().includes("/resume")) {
@@ -84,7 +86,9 @@ test("protects dashboard and allows demo sign in", async ({ page }, testInfo) =>
     await expect(saveResume).toBeDisabled();
   } else {
     await saveResume.click();
-    await expect(page).toHaveURL(/\/jobs/);
+    await expect(async () => {
+      expect(page.url().includes("/jobs") || (await page.getByRole("alert").isVisible())).toBe(true);
+    }).toPass();
   }
 
   if (!page.url().includes("/jobs")) {

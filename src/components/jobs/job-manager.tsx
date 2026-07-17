@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useMemo, useState } from "react";
+import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import {
   BriefcaseBusiness,
   CheckCircle2,
@@ -252,6 +252,7 @@ function DuplicateWarning({ results }: { results: DuplicateResult[] }) {
 
 export function JobManager({ databaseConfigured, jobs }: JobManagerProps) {
   const [state, formAction, isPending] = useActionState<JobFormState, FormData>(createJobForm, {});
+  const errorRef = useRef<HTMLDivElement>(null);
   const [values, setValues] = useState<JobFormValues>(emptyValues);
   const progress = useMemo(() => jobProgress(values), [values]);
   const duplicateResults = useMemo(
@@ -269,6 +270,15 @@ export function JobManager({ databaseConfigured, jobs }: JobManagerProps) {
     [jobs, values],
   );
   const hasEnoughForDuplicateCheck = hasText(values.company) || hasText(values.title) || hasText(values.jobUrl);
+
+  useEffect(() => {
+    if (!state.error) {
+      return;
+    }
+
+    errorRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    errorRef.current?.focus({ preventScroll: true });
+  }, [state.error]);
 
   function updateValue(key: keyof JobFormValues, value: string) {
     setValues((current) => ({ ...current, [key]: value }));
@@ -298,7 +308,12 @@ export function JobManager({ databaseConfigured, jobs }: JobManagerProps) {
       ) : null}
 
       {state.error ? (
-        <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm leading-6 text-destructive">
+        <div
+          className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm leading-6 text-destructive"
+          ref={errorRef}
+          role="alert"
+          tabIndex={-1}
+        >
           {state.error}
         </div>
       ) : null}
