@@ -83,14 +83,26 @@ Support latest Chrome, Safari, Firefox, and mobile Safari/Chrome for core flows.
 
 ## Release Regression
 
-- auth
-- onboarding
-- resume save
-- job add
-- duplicate warning
-- scoring
-- top 10
-- package generation
-- review queue
-- application status
-- export
+- Auth: unauthenticated protected pages redirect to `/sign-in`.
+- Auth: unauthenticated CSV export routes return `401`.
+- Onboarding/profile: save profile facts and preferences.
+- Resume: save a default resume.
+- Jobs: add a job and see duplicate warning behavior while typing.
+- Scoring: score a job with mock AI or configured OpenAI provider.
+- Top matches: confirm scored jobs rank and skipped/disqualified roles are excluded.
+- Question bank: save an approved answer and match a similar question.
+- Review queue: confirm low-confidence score/package output creates an item and can be resolved.
+- Package generation: generate a package from a scored job.
+- Applications: mark a package ready/applied and add follow-up metadata.
+- Export: download jobs and applications CSV while signed in.
+
+## Week 16 Automated Gate
+
+Run this locally before pushing a release candidate:
+
+```bash
+npm run check
+env 'DATABASE_URL=postgresql://aca:aca@localhost:5433/aca?schema=public' npm run test:e2e
+```
+
+For CI, `.github/workflows/ci.yml` provisions PostgreSQL, applies migrations, seeds fake data, runs the app checks, and executes the Playwright smoke suite.

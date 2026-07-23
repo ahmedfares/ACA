@@ -11,6 +11,7 @@
     "db:seed": "node prisma/seed.mjs",
     "db:up": "docker compose up -d postgres",
     "start": "next start",
+    "check": "prisma generate && DATABASE_URL=postgresql://user:password@localhost:5432/aca prisma validate && npm run lint && npm run typecheck && npm run test && npm run build",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",

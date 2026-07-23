@@ -8,6 +8,14 @@ test("protects all app routes before sign in", async ({ page }) => {
   }
 });
 
+test("rejects unauthenticated CSV exports", async ({ page }) => {
+  for (const path of ["/api/export/applications.csv", "/api/export/jobs.csv"]) {
+    const response = await page.goto(path);
+
+    expect(response?.status()).toBe(401);
+  }
+});
+
 function credentialsForProject(projectName: string) {
   if (projectName.includes("mobile")) {
     return {

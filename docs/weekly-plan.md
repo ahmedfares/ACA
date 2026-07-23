@@ -377,3 +377,16 @@ Week 15 is complete when applications can move from draft to applied, CSV export
 - Files: `tests/e2e`, `docs/deployment.md`, CI config.
 - Tests: full test suite and manual regression.
 - Commit: `chore: prepare phase 1 deployment`
+
+### Week 16 Completion Review
+
+Use this checklist to review Week 16:
+
+1. Confirm CI exists at `.github/workflows/ci.yml` and runs Prisma, lint, typecheck, tests, build, and Playwright.
+2. Confirm middleware protects all authenticated product pages, including `/applications`.
+3. Confirm unauthenticated CSV exports return `401`.
+4. Confirm deployment docs list required hosted environment variables and release-candidate steps.
+5. Confirm security docs name the accepted Week 16 risks before alpha testers.
+6. Run `npm run check` and `npm run test:e2e`.
+
+Week 16 is complete when the app has an automated release gate, security/deployment docs are current, all checks pass, and the branch is pushed to GitHub.

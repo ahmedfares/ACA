@@ -66,23 +66,40 @@ For hosted alpha, use a managed PostgreSQL database, set a strong `AUTH_SECRET`,
 
 ## Deployment Checklist
 
-- production database created
-- migrations applied
-- distinct alpha tester credentials configured
-- secrets configured
-- Auth.js URL configured
-- AI key configured with budget controls
-- logging redaction enabled
-- test user flow verified
-- export routes verified
-- data deletion path documented
+- Production database created.
+- `npm run db:migrate` applied against the production database.
+- Distinct alpha tester credentials configured through `ALPHA_AUTH_USERS`.
+- `AUTH_SECRET`, `AUTH_URL`, `AUTH_TRUST_HOST`, `DATABASE_URL`, and AI provider secrets configured.
+- `AI_PROVIDER=mock` only for demos; use `AI_PROVIDER=openai` plus budget controls for hosted alpha.
+- Authenticated app routes verified: dashboard, profile, resume, jobs, top matches, review queue, question bank, applications.
+- Export routes verified while signed in: `/api/export/jobs.csv` and `/api/export/applications.csv`.
+- Unauthenticated export requests return `401`.
+- Review queue checked for low-confidence scoring/package output.
+- Data deletion and backup approach confirmed before inviting external testers.
 
 ## CI Checks
 
-- install dependencies
-- lint
-- typecheck
-- unit tests
-- integration tests where practical
-- Prisma schema validation
-- Playwright smoke test before release candidate
+- `npm ci`
+- `npx prisma generate`
+- `npx prisma validate`
+- `npm run db:migrate`
+- `npm run db:seed`
+- `npm run lint`
+- `npm run typecheck`
+- `npm run test`
+- `npm run build`
+- `npm run test:e2e`
+
+The GitHub Actions workflow at `.github/workflows/ci.yml` runs these checks against PostgreSQL with the mock AI provider.
+
+## Phase 1 Release Candidate Flow
+
+1. Push to `main`.
+2. Confirm GitHub Actions passes.
+3. Apply migrations in the hosting environment.
+4. Seed only fake/demo data for demos; do not seed real personal data.
+5. Sign in as an alpha tester.
+6. Complete the release regression in `docs/testing.md`.
+7. Export jobs and applications CSV.
+8. Confirm review queue items are explainable and resolvable.
+9. Invite the first tester only after the regression is clean.
