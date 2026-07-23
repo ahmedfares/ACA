@@ -12,11 +12,13 @@ import {
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { TopMatchesList } from "@/components/matching/top-matches-list";
+import type { RankedJobMatch } from "@/features/matching/ranking";
 
 const metrics = [
   { label: "Setup focus", value: "3", detail: "Profile, resume, and first job" },
   { label: "Jobs ready", value: "0", detail: "Add roles for duplicate checks" },
-  { label: "Next AI step", value: "W10", detail: "Job scoring and fit reasons" },
+  { label: "Next AI step", value: "W12", detail: "Review queue and decisions" },
   { label: "Alpha goal", value: "5", detail: "Trusted testers after hosted setup" },
 ];
 
@@ -67,7 +69,11 @@ const alphaChecklist = [
   },
 ];
 
-export function DashboardOverview() {
+type DashboardOverviewProps = {
+  topMatches?: RankedJobMatch[];
+};
+
+export function DashboardOverview({ topMatches = [] }: DashboardOverviewProps) {
   return (
     <section>
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
@@ -102,7 +108,7 @@ export function DashboardOverview() {
           ))}
         </div>
         <p className="mt-4 text-sm leading-6 text-muted-foreground">
-          The next product milestone turns these inputs into an Apply / Review / Skip recommendation.
+          Scored jobs now become ranked top matches, so the next best role is easier to spot.
         </p>
       </section>
 
@@ -112,7 +118,7 @@ export function DashboardOverview() {
           <h2 className="text-lg font-semibold tracking-normal">Alpha test checklist</h2>
         </div>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          Use these four steps to review the full Week 1-8 value loop without expecting Week 9+ scoring yet.
+          Use these four steps to review the setup loop, then score saved jobs to populate top matches.
         </p>
         <div className="mt-5 grid gap-3 md:grid-cols-2">
           {alphaChecklist.map((item, index) => (
@@ -193,6 +199,15 @@ export function DashboardOverview() {
             </div>
           </div>
         </aside>
+      </div>
+
+      <div className="mt-8">
+        <TopMatchesList
+          emptyDescription="No ranked matches yet. Open a saved job, click Score this job, then return here."
+          matches={topMatches.slice(0, 3)}
+          showViewAll={topMatches.length > 3}
+          title="Top matches preview"
+        />
       </div>
     </section>
   );

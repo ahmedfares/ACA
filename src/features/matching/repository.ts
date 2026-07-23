@@ -1,6 +1,7 @@
 import type { PrismaClient } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
+import { rankTopMatches } from "@/features/matching/ranking";
 import type { JobScore } from "@/features/matching/schemas";
 
 type MatchingDb = Pick<PrismaClient, "careerProfile" | "job" | "jobScore" | "preference" | "resume" | "skill">;
@@ -37,6 +38,47 @@ export function createMatchingRepository(db: MatchingDb = prisma) {
         orderBy: { createdAt: "desc" },
         where: { jobId, userId },
       });
+    },
+
+    async listRankedMatches(userId: string, limit = 10) {
+      const scores = await db.jobScore.findMany({
+        include: {
+          job: {
+            select: {
+              company: true,
+              id: true,
+              location: true,
+              title: true,
+            },
+          },
+        },
+        orderBy: [{ jobId: "asc" }, { createdAt: "desc" }],
+        where: { userId },
+      });
+      const latestByJob = new Map<string, (typeof scores)[number]>();
+
+      for (const score of scores) {
+        if (!latestByJob.has(score.jobId)) {
+          latestByJob.set(score.jobId, score);
+        }
+      }
+
+      return rankTopMatches(
+        Array.from(latestByJob.values()).map((score) => ({
+          company: score.job.company,
+          confidence: score.confidence,
+          createdAt: score.createdAt,
+          hardCriteriaResult: score.hardCriteriaResult,
+          id: score.id,
+          jobId: score.jobId,
+          location: score.job.location,
+          overall: score.overall,
+          reasonsToApply: score.reasonsToApply,
+          recommendation: score.recommendation,
+          title: score.job.title,
+        })),
+        limit,
+      );
     },
 
     async getScoreContext(userId: string, jobId: string) {

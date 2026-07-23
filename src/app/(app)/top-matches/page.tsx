@@ -1,24 +1,27 @@
-import { Sparkles } from "lucide-react";
+import { auth } from "@/auth";
+import { TopMatchesList } from "@/components/matching/top-matches-list";
+import { matchingRepository } from "@/features/matching/repository";
 
-import { EmptyState } from "@/components/app/empty-state";
-
-export default async function TopMatchesPage({
-  searchParams,
-}: {
-  searchParams?: Promise<{ capturedJobId?: string }>;
-}) {
-  const params = await searchParams;
-  const description = params?.capturedJobId
-    ? "Job captured. This page is intentionally paused during the current alpha; ranked Apply / Review / Skip recommendations arrive after the Week 10 scoring slice."
-    : "This page is intentionally paused during the current alpha. Add jobs now; ranked Apply / Review / Skip recommendations arrive after the Week 10 scoring slice.";
+export default async function TopMatchesPage() {
+  const session = await auth();
+  const matches =
+    session?.user?.id && process.env.DATABASE_URL ? await matchingRepository.listRankedMatches(session.user.id, 10) : [];
 
   return (
-    <EmptyState
-      icon={Sparkles}
-      title="Top matches"
-      status="Planned Week 11"
-      description={description}
-      primaryAction={{ href: "/jobs", label: "Add jobs first" }}
-    />
+    <section className="space-y-6">
+      <div>
+        <p className="text-sm font-medium text-primary">Week 11 ranking</p>
+        <h1 className="mt-2 text-3xl font-semibold tracking-normal">Top matches</h1>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
+          ACA ranks scored jobs so you can spend attention on the strongest eligible roles first. Disqualified and
+          skipped jobs stay out of this list.
+        </p>
+      </div>
+
+      <TopMatchesList
+        emptyDescription="No ranked matches yet. Open a saved job, run Score this job, then return here for your ranked top 10."
+        matches={matches}
+      />
+    </section>
   );
 }

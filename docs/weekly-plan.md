@@ -274,6 +274,18 @@ Week 10 is complete when one job can be scored through the provider boundary, th
 - Tests: ranking tests.
 - Commit: `feat: add top matches dashboard`
 
+### Week 11 Completion Review
+
+Use this checklist to review Week 11:
+
+1. Confirm `src/features/matching` ranks scored jobs by latest eligible score, confidence, and recency.
+2. Confirm jobs with `Skip` or `Disqualified` recommendations are excluded from Top Matches.
+3. Confirm `/dashboard` shows a Top Matches preview when scored jobs exist.
+4. Confirm `/top-matches` shows the ranked top 10 list and links each match back to its job detail page.
+5. Run `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, and `npm run test:e2e`.
+
+Week 11 is complete when scored jobs rank deterministically, the dashboard previews the strongest opportunities, the Top Matches page displays the top 10, all checks pass, and the branch is pushed to GitHub.
+
 ## Week 12: Review Queue
 
 - Result: central queue supports open/resolve.
