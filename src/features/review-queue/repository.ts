@@ -8,6 +8,10 @@ type ReviewQueueDb = Pick<PrismaClient, "reviewQueueItem">;
 export function createReviewQueueRepository(db: ReviewQueueDb = prisma) {
   return {
     async createOrUpdateJobScoreReview(userId: string, decision: ReviewQueueDecision) {
+      return this.createOrUpdateReviewItem(userId, decision);
+    },
+
+    async createOrUpdateReviewItem(userId: string, decision: ReviewQueueDecision) {
       if (!decision.shouldCreate) {
         return null;
       }

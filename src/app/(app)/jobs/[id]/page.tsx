@@ -3,8 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { auth } from "@/auth";
+import { ApplicationPackagePanel } from "@/components/applications/application-package-panel";
 import { JobScorePanel } from "@/components/jobs/job-score-panel";
 import { Button } from "@/components/ui/button";
+import { applicationRepository } from "@/features/applications/repository";
 import { jobRepository } from "@/features/jobs/repository";
 import { matchingRepository } from "@/features/matching/repository";
 
@@ -32,9 +34,10 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
     notFound();
   }
 
-  const [job, latestScore] = await Promise.all([
+  const [job, latestScore, latestPackage] = await Promise.all([
     jobRepository.getJob(session.user.id, id),
     matchingRepository.getLatestScore(session.user.id, id),
+    applicationRepository.getLatestPackage(session.user.id, id),
   ]);
 
   if (!job) {
@@ -80,6 +83,8 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
       </div>
 
       <JobScorePanel jobId={job.id} score={latestScore} />
+
+      <ApplicationPackagePanel jobId={job.id} latestPackage={latestPackage} />
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
         <article className="rounded-lg border bg-card p-5 shadow-sm">

@@ -1,3 +1,4 @@
+import { applicationPackageJsonSchema } from "@/features/applications/schemas";
 import { jobScoreJsonSchema } from "@/features/matching/schemas";
 import type { AiPromptDefinition } from "@/features/ai/types";
 
@@ -11,6 +12,7 @@ export const promptIds = [
   "question-classification.v1",
   "question-similarity.v1",
   "question-answer.v1",
+  "application-package.v1",
   "duplicate-analysis.v1",
   "review-explanation.v1",
 ] as const;
@@ -106,6 +108,32 @@ export const promptRegistry: Record<PromptId, AiPromptDefinition> = {
     id: "question-answer.v1",
     messages: [{ role: "system", content: sharedSafetyRules }],
     outputJsonSchema: {},
+    version: "v1",
+  },
+  "application-package.v1": {
+    description: "Generate truthful application materials from trusted profile, resume, score, and approved answers.",
+    id: "application-package.v1",
+    messages: [
+      {
+        role: "system",
+        content: [
+          "You are ACA's truthful application package drafter.",
+          "Draft only from trusted profile, resume, scoring output, and approved answer memory.",
+          sharedSafetyRules,
+          "Application materials must be specific, modest, and ready for human review.",
+          "If a claim is not supported, omit it or add a review note.",
+          "If an answer uses generic wording or needs a specific story, mark it NeedsReview.",
+        ].join("\n"),
+      },
+      {
+        role: "user",
+        content: [
+          "Create a tailored summary, cover letter, recruiter message, key points, question drafts, review notes, and confidence.",
+          "Keep cover letters concise and avoid exaggerated enthusiasm.",
+        ].join("\n"),
+      },
+    ],
+    outputJsonSchema: applicationPackageJsonSchema,
     version: "v1",
   },
   "duplicate-analysis.v1": {

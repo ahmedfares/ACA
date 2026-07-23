@@ -336,6 +336,19 @@ Week 13 is complete when approved answers persist, similar questions can be matc
 - Tests: mocked AI generation tests.
 - Commit: `feat: add application package generation`
 
+### Week 14 Completion Review
+
+Use this checklist to review Week 14:
+
+1. Confirm `Application`, `ApplicationMaterial`, and `ApplicationQuestion` exist in `prisma/schema.prisma` and have a deployable migration.
+2. Confirm job detail pages show an Application Package panel.
+3. Confirm package generation requires profile, preferences, default resume, and a scored job.
+4. Confirm generated tailored summary, cover letter, recruiter message, and question drafts persist under the job application.
+5. Confirm low-confidence packages or question drafts create a review queue item.
+6. Run `npx prisma generate`, `prisma validate`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, and `npm run test:e2e`.
+
+Week 14 is complete when a scored job can produce reviewable application materials, uncertain outputs enter review, all checks pass, and the branch is pushed to GitHub.
+
 ## Week 15: Application Tracker and Exports
 
 - Result: application statuses and CSV exports.
