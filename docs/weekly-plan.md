@@ -357,6 +357,19 @@ Week 14 is complete when a scored job can produce reviewable application materia
 - Tests: status and CSV tests.
 - Commit: `feat: add application tracking and exports`
 
+### Week 15 Completion Review
+
+Use this checklist to review Week 15:
+
+1. Confirm `/applications` lists generated application packages with job, resume, material, and question context.
+2. Confirm users can update status, applied date, follow-up date, source, application URL, recruiter fields, and notes.
+3. Confirm updates are scoped by `userId` and invalid status payloads fail validation.
+4. Confirm `/api/export/applications.csv` returns authenticated application records as CSV.
+5. Confirm `/api/export/jobs.csv` returns authenticated saved jobs as CSV.
+6. Run `npx prisma generate`, `prisma validate`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, and `npm run test:e2e`.
+
+Week 15 is complete when applications can move from draft to applied, CSV exports work for jobs and applications, all checks pass, and the branch is pushed to GitHub.
+
 ## Week 16: E2E, Security, Deployment
 
 - Result: deployable Phase 1 candidate.

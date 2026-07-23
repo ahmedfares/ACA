@@ -2,6 +2,22 @@ import { z } from "zod";
 
 const scoreSchema = z.number().int().min(0).max(100);
 
+const optionalText = z
+  .string()
+  .trim()
+  .transform((value) => (value.length > 0 ? value : undefined))
+  .optional();
+
+export const applicationStatusOptions = [
+  "PackageDraft",
+  "Ready",
+  "Applied",
+  "Interviewing",
+  "Offer",
+  "Rejected",
+  "Archived",
+] as const;
+
 export const applicationQuestionDraftSchema = z.object({
   answer: z.string().trim().min(1).max(4000),
   category: z.string().trim().min(1).max(120).optional(),
@@ -21,8 +37,20 @@ export const applicationPackageSchema = z.object({
   tailoredSummary: z.string().trim().min(40).max(4000),
 });
 
+export const applicationStatusInputSchema = z.object({
+  applicationDate: z.date().optional(),
+  applicationUrl: optionalText.pipe(z.string().url("Enter a valid application URL.").optional()),
+  followUpDate: z.date().optional(),
+  notes: optionalText,
+  recruiterContact: optionalText,
+  recruiterName: optionalText,
+  source: optionalText,
+  status: z.enum(applicationStatusOptions),
+});
+
 export type ApplicationPackage = z.infer<typeof applicationPackageSchema>;
 export type ApplicationQuestionDraft = z.infer<typeof applicationQuestionDraftSchema>;
+export type ApplicationStatusInput = z.infer<typeof applicationStatusInputSchema>;
 
 export const applicationPackageJsonSchema = {
   additionalProperties: false,

@@ -1,6 +1,7 @@
 import {
   BriefcaseBusiness,
   ClipboardList,
+  FileCheck2,
   FileQuestion,
   FileText,
   LayoutDashboard,
@@ -20,6 +21,7 @@ export const appNavItems = [
   { href: "/top-matches", label: "Top Matches", icon: Sparkles },
   { href: "/review", label: "Review Queue", icon: ClipboardList },
   { href: "/question-bank", label: "Question Bank", icon: FileQuestion },
+  { href: "/applications", label: "Applications", icon: FileCheck2 },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 

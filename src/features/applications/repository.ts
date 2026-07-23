@@ -1,6 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
 
-import type { ApplicationPackage } from "@/features/applications/schemas";
+import { applicationStatusInputSchema, type ApplicationPackage } from "@/features/applications/schemas";
 import { normalizeQuestion } from "@/features/questions";
 import { prisma } from "@/lib/prisma";
 
@@ -158,6 +158,91 @@ export function createApplicationRepository(db: ApplicationDb = prisma) {
           },
         },
         where: { jobId, userId },
+      });
+    },
+
+    async listApplications(userId: string) {
+      return db.application.findMany({
+        include: {
+          job: {
+            select: {
+              company: true,
+              id: true,
+              jobUrl: true,
+              location: true,
+              title: true,
+            },
+          },
+          materials: {
+            select: {
+              id: true,
+              type: true,
+            },
+          },
+          questions: {
+            select: {
+              id: true,
+              status: true,
+            },
+          },
+          resume: {
+            select: {
+              id: true,
+              label: true,
+            },
+          },
+        },
+        orderBy: [{ updatedAt: "desc" }],
+        where: { userId },
+      });
+    },
+
+    async updateApplicationStatus(userId: string, applicationId: string, input: unknown) {
+      const parsed = applicationStatusInputSchema.parse(input);
+
+      return db.application.updateMany({
+        data: {
+          applicationDate: parsed.applicationDate ?? null,
+          applicationUrl: parsed.applicationUrl ?? null,
+          followUpDate: parsed.followUpDate ?? null,
+          notes: parsed.notes ?? null,
+          recruiterContact: parsed.recruiterContact ?? null,
+          recruiterName: parsed.recruiterName ?? null,
+          source: parsed.source ?? null,
+          status: parsed.status,
+        },
+        where: {
+          id: applicationId,
+          userId,
+        },
+      });
+    },
+
+    async listApplicationsForExport(userId: string) {
+      return db.application.findMany({
+        include: {
+          job: {
+            select: {
+              company: true,
+              jobUrl: true,
+              title: true,
+            },
+          },
+          resume: {
+            select: {
+              label: true,
+            },
+          },
+        },
+        orderBy: [{ updatedAt: "desc" }],
+        where: { userId },
+      });
+    },
+
+    async listJobsForExport(userId: string) {
+      return db.job.findMany({
+        orderBy: [{ updatedAt: "desc" }],
+        where: { userId },
       });
     },
   };

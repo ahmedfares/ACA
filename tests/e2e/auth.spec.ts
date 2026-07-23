@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test("protects all app routes before sign in", async ({ page }) => {
-  for (const path of ["/dashboard", "/profile", "/resume", "/jobs", "/top-matches", "/review", "/question-bank"]) {
+  for (const path of ["/dashboard", "/profile", "/resume", "/jobs", "/top-matches", "/review", "/question-bank", "/applications"]) {
     await page.goto(path);
 
     await expect(page).toHaveURL(/\/sign-in/);
