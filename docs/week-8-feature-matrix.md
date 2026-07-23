@@ -28,8 +28,8 @@ Date: 2026-07-17
 | Duplicate normalization | Week 8 | N/A | Complete | N/A | Deterministic only | Unit matrix passed | N/A | `duplicate-detection.test.ts` | Persisted duplicate integration test | Complete |
 | Duplicate warning UI | Week 8 | Complete | Uses detector | Seeded jobs available locally | Deterministic only | Unit/E2E passed | Clear reasons/confidence | `JobManager`, E2E clear-state assertion | Add exact-warning persisted E2E | Complete locally |
 | AI provider abstraction | Week 9 | N/A | Complete | N/A | Provider boundary complete | Unit tests passed | N/A | `src/features/ai`, `tests/unit/ai-provider.test.ts` | Real API key/configuration for hosted alpha | Complete locally |
-| AI job scoring | Week 10 | Not started | Not started | Not started | Not started | Not tested | N/A | Weekly plan Week 10 | Build in Week 10 | Planned for Weeks 9-16 |
-| Score explanation UI | Week 10 | Not started | Not started | Not started | Not started | Not tested | N/A | Weekly plan Week 10 | Build in Week 10 | Planned for Weeks 9-16 |
+| AI job scoring | Week 10 | Complete on job detail | Scoring service/action complete | `JobScore` migration added | Uses provider boundary | Unit tests passed | Clear score/error panel | `src/features/matching`, `/jobs/[id]` | Real API key/configuration for hosted alpha | Complete locally |
+| Score explanation UI | Week 10 | Complete on job detail | Reads latest score | `JobScore` persisted | Displays validated output | Build/E2E passed | Shows recommendation, hard criteria, reasons | `JobScorePanel` | Ranking waits for Week 11 | Complete locally |
 | Top matches | Week 11 | Placeholder only | Not started | Not started | Depends on scoring | Not tested | Placeholder | `/top-matches` | Build in Week 11 | Planned for Weeks 9-16 |
 | Review queue | Week 12 | Placeholder only | Not started | Not started | Later | Not tested | Placeholder | `/review` | Build in Week 12 | Planned for Weeks 9-16 |
 | Question bank | Week 13 | Placeholder only | Not started | Not started | Later | Not tested | Placeholder | `/question-bank` | Build in Week 13 | Planned for Weeks 9-16 |

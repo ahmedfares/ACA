@@ -251,6 +251,21 @@ Week 9 is complete when the AI provider boundary exists, job-scoring structured 
 - Tests: hard-filter and scoring persistence tests.
 - Commit: `feat: add job scoring`
 
+### Week 10 Completion Review
+
+Use this checklist to review Week 10:
+
+1. Run `npx prisma generate` after pulling the `JobScore` schema changes.
+2. Run `env DATABASE_URL=postgresql://user:password@localhost:5432/aca npx prisma validate`.
+3. Confirm `JobScore` exists in `prisma/schema.prisma` and has a deployable migration.
+4. Confirm hard criteria evaluate compensation, remote preference, employment type, and deal-breaker signals before AI scoring.
+5. Confirm a signed-in user can open a saved job detail page and see the Fit score panel.
+6. With `OPENAI_API_KEY` configured, click "Score this job" and confirm a validated score persists and displays after redirect.
+7. Without AI configuration, confirm the UI shows a clear error instead of failing silently.
+8. Run `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, and `npm run test:e2e`.
+
+Week 10 is complete when one job can be scored through the provider boundary, the structured result is persisted as `JobScore`, hard criteria can override unsafe recommendations, the job detail UI displays the latest score, all checks pass, and the branch is pushed to GitHub.
+
 ## Week 11: Top Matches Dashboard
 
 - Result: dashboard ranks eligible top 10.
