@@ -1,5 +1,13 @@
 import type { ApplicationPackage } from "@/features/applications/schemas";
 
+function cleanSentence(value: string) {
+  return value.trim().replace(/[.?!]+$/g, "");
+}
+
+function sentenceList(values: string[]) {
+  return values.map(cleanSentence).join("; ");
+}
+
 export function applicationPackageReviewDecision(input: { jobId: string; pkg: ApplicationPackage }) {
   const reasons: string[] = [];
 
@@ -8,13 +16,13 @@ export function applicationPackageReviewDecision(input: { jobId: string; pkg: Ap
   }
 
   if (input.pkg.reviewNotes.length > 0) {
-    reasons.push(`Review notes: ${input.pkg.reviewNotes.slice(0, 3).join("; ")}.`);
+    reasons.push(`Review notes: ${sentenceList(input.pkg.reviewNotes.slice(0, 3))}.`);
   }
 
   const questionReviewCount = input.pkg.questions.filter((question) => question.status === "NeedsReview" || question.confidence < 85).length;
 
   if (questionReviewCount > 0) {
-    reasons.push(`${questionReviewCount} application answer${questionReviewCount === 1 ? "" : "s"} need review.`);
+    reasons.push(`${questionReviewCount} application answer${questionReviewCount === 1 ? " needs" : "s need"} review.`);
   }
 
   return {

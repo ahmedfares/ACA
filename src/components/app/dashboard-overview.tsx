@@ -4,10 +4,8 @@ import {
   BriefcaseBusiness,
   CheckCircle2,
   ClipboardList,
-  FileText,
   Sparkles,
   Target,
-  UserRound,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -16,33 +14,33 @@ import { TopMatchesList } from "@/components/matching/top-matches-list";
 import type { RankedJobMatch } from "@/features/matching/ranking";
 
 const metrics = [
-  { label: "Setup focus", value: "3", detail: "Profile, resume, and first job" },
-  { label: "Jobs ready", value: "0", detail: "Add roles for duplicate checks" },
-  { label: "Next AI step", value: "W12", detail: "Review queue and decisions" },
-  { label: "Alpha goal", value: "5", detail: "Trusted testers after hosted setup" },
+  { label: "Source inputs", value: "3", detail: "Profile, resume, and jobs" },
+  { label: "Decision tools", value: "4", detail: "Scoring, ranking, review, packages" },
+  { label: "Tracking", value: "CSV", detail: "Applications and exports ready" },
+  { label: "Release gate", value: "CI", detail: "Week 16 checks in place" },
 ];
 
 const nextActions = [
   {
-    title: "Career profile",
-    description: "Tell ACA what jobs are worth your limited energy.",
-    href: "/profile",
-    icon: UserRound,
-    status: "Week 4",
-  },
-  {
-    title: "Resume",
-    description: "Paste the source of truth future scoring should respect.",
-    href: "/resume",
-    icon: FileText,
-    status: "Week 6",
-  },
-  {
-    title: "Jobs",
-    description: "Capture roles and catch duplicate postings before they drain attention.",
+    title: "Score top jobs",
+    description: "Open saved jobs and generate Apply / Review / Skip decisions.",
     href: "/jobs",
+    icon: Sparkles,
+    status: "Week 10",
+  },
+  {
+    title: "Review decisions",
+    description: "Clear low-confidence score and package items before applying.",
+    href: "/review",
+    icon: ClipboardList,
+    status: "Week 12",
+  },
+  {
+    title: "Track applications",
+    description: "Move packages to applied and export your records.",
+    href: "/applications",
     icon: BriefcaseBusiness,
-    status: "Week 7",
+    status: "Week 15",
   },
 ];
 
@@ -188,13 +186,13 @@ export function DashboardOverview({ topMatches = [] }: DashboardOverviewProps) {
               <p className="text-sm leading-6">Authentication and protected routing are in place.</p>
             </div>
             <div className="flex gap-3">
-              <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
+          <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
               <p className="text-sm leading-6">The shell is responsive across mobile and desktop.</p>
             </div>
             <div className="flex gap-3">
-              <AlertCircle className="mt-0.5 size-5 shrink-0 text-accent-foreground" aria-hidden="true" />
+              <AlertCircle className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
               <p className="text-sm leading-6 text-muted-foreground">
-                Scoring, review queues, and applications remain planned for later slices.
+                Scoring, review queues, packages, tracking, exports, and CI are ready for release-candidate review.
               </p>
             </div>
           </div>

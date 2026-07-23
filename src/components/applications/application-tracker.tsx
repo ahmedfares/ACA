@@ -82,6 +82,14 @@ function TrackerCard({ application }: { application: ApplicationTrackerItem }) {
   }, [state.error]);
 
   const needsReviewCount = application.questions.filter((question) => question.status !== "Ready").length;
+  const statusId = `${application.id}-status`;
+  const applicationDateId = `${application.id}-applicationDate`;
+  const followUpDateId = `${application.id}-followUpDate`;
+  const sourceId = `${application.id}-source`;
+  const applicationUrlId = `${application.id}-applicationUrl`;
+  const recruiterNameId = `${application.id}-recruiterName`;
+  const recruiterContactId = `${application.id}-recruiterContact`;
+  const notesId = `${application.id}-notes`;
 
   return (
     <article className="rounded-lg border bg-card p-5 shadow-sm">
@@ -161,11 +169,12 @@ function TrackerCard({ application }: { application: ApplicationTrackerItem }) {
             </div>
           ) : null}
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
-            <label className="space-y-1 text-sm font-medium">
-              <span>Status</span>
+            <div className="space-y-1">
+              <label className="text-sm font-medium" htmlFor={statusId}>Status</label>
               <select
                 className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 defaultValue={application.status}
+                id={statusId}
                 name="status"
               >
                 {applicationStatusOptions.map((status) => (
@@ -174,71 +183,78 @@ function TrackerCard({ application }: { application: ApplicationTrackerItem }) {
                   </option>
                 ))}
               </select>
-            </label>
-            <label className="space-y-1 text-sm font-medium">
-              <span>Applied date</span>
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium" htmlFor={applicationDateId}>Applied date</label>
               <input
                 className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 defaultValue={dateInputValue(application.applicationDate)}
+                id={applicationDateId}
                 name="applicationDate"
                 type="date"
               />
-            </label>
-            <label className="space-y-1 text-sm font-medium">
-              <span>Follow-up date</span>
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium" htmlFor={followUpDateId}>Follow-up date</label>
               <input
                 className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 defaultValue={dateInputValue(application.followUpDate)}
+                id={followUpDateId}
                 name="followUpDate"
                 type="date"
               />
-            </label>
-            <label className="space-y-1 text-sm font-medium">
-              <span>Source</span>
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium" htmlFor={sourceId}>Source</label>
               <input
                 className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 defaultValue={application.source ?? ""}
+                id={sourceId}
                 name="source"
                 placeholder="Company site"
               />
-            </label>
-            <label className="space-y-1 text-sm font-medium sm:col-span-2 xl:col-span-1">
-              <span>Application URL</span>
+            </div>
+            <div className="space-y-1 sm:col-span-2 xl:col-span-1">
+              <label className="text-sm font-medium" htmlFor={applicationUrlId}>Application URL</label>
               <input
                 className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 defaultValue={application.applicationUrl ?? ""}
+                id={applicationUrlId}
                 name="applicationUrl"
                 placeholder="https://..."
                 type="url"
               />
-            </label>
-            <label className="space-y-1 text-sm font-medium">
-              <span>Recruiter</span>
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium" htmlFor={recruiterNameId}>Recruiter</label>
               <input
                 className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 defaultValue={application.recruiterName ?? ""}
+                id={recruiterNameId}
                 name="recruiterName"
                 placeholder="Name"
               />
-            </label>
-            <label className="space-y-1 text-sm font-medium">
-              <span>Recruiter contact</span>
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium" htmlFor={recruiterContactId}>Recruiter contact</label>
               <input
                 className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 defaultValue={application.recruiterContact ?? ""}
+                id={recruiterContactId}
                 name="recruiterContact"
                 placeholder="email or LinkedIn"
               />
-            </label>
-            <label className="space-y-1 text-sm font-medium sm:col-span-2 xl:col-span-1">
-              <span>Notes</span>
+            </div>
+            <div className="space-y-1 sm:col-span-2 xl:col-span-1">
+              <label className="text-sm font-medium" htmlFor={notesId}>Notes</label>
               <textarea
                 className="min-h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm leading-6 outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 defaultValue={application.notes ?? ""}
+                id={notesId}
                 name="notes"
                 placeholder="What happened, what to do next."
               />
-            </label>
+            </div>
           </div>
           <div className="mt-4 flex justify-end">
             <Button disabled={isPending} size="sm" type="submit">

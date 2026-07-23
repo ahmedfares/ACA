@@ -43,7 +43,7 @@ const emptyValues: AnswerFormValues = {
   answer: "",
   category: "",
   question: "",
-  reusePolicy: "Adapt before use",
+  reusePolicy: "",
   tags: "",
 };
 
@@ -299,6 +299,7 @@ export function QuestionBankManager({ answers, databaseConfigured }: QuestionBan
                   onChange={(event) => updateValue("reusePolicy", event.target.value)}
                   value={values.reusePolicy}
                 >
+                  <option value="">Choose reuse rule</option>
                   {reusePolicyOptions.map((option) => (
                     <option key={option} value={option}>
                       {option}

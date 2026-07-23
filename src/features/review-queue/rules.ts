@@ -16,6 +16,14 @@ export type ReviewQueueDecision = {
   type: string;
 };
 
+function cleanSentence(value: string) {
+  return value.trim().replace(/[.?!]+$/g, "");
+}
+
+function sentenceList(values: string[]) {
+  return values.map(cleanSentence).join("; ");
+}
+
 export function reviewDecisionForJobScore({ jobId, score }: ReviewQueueInput): ReviewQueueDecision {
   const reasons: string[] = [];
 
@@ -28,11 +36,11 @@ export function reviewDecisionForJobScore({ jobId, score }: ReviewQueueInput): R
   }
 
   if (score.missingInformation.length > 0) {
-    reasons.push(`Missing information: ${score.missingInformation.slice(0, 3).join("; ")}.`);
+    reasons.push(`Missing information: ${sentenceList(score.missingInformation.slice(0, 3))}.`);
   }
 
   if (score.concerns.length > 0) {
-    reasons.push(`Concerns: ${score.concerns.slice(0, 3).join("; ")}.`);
+    reasons.push(`Concerns: ${sentenceList(score.concerns.slice(0, 3))}.`);
   }
 
   const priority = score.confidence < 60 || score.recommendation === "Review" ? 1 : score.confidence < 85 ? 2 : 3;

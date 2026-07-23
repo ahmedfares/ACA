@@ -113,7 +113,7 @@ export function ApplicationPackagePanel({ jobId, latestPackage }: ApplicationPac
 
       {!latestPackage ? (
         <div className="mt-5 rounded-lg border border-dashed bg-secondary/50 p-4 text-sm leading-6 text-muted-foreground">
-          No package yet. Score this job first, then generate materials for a focused application.
+          No package yet. Generate materials after the fit score looks worth your attention.
         </div>
       ) : (
         <div className="mt-5 space-y-4">

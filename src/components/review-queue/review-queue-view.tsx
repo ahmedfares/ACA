@@ -34,6 +34,12 @@ function formatDate(value: Date | string) {
   return new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(new Date(value));
 }
 
+function formatRequiredAction(value: string) {
+  return value
+    .replace(/\.\.+/g, ".")
+    .replace(/\b1 application answer need review\b/g, "1 application answer needs review");
+}
+
 export function ReviewQueueView({ items }: ReviewQueueViewProps) {
   return (
     <section className="space-y-6">
@@ -87,7 +93,7 @@ export function ReviewQueueView({ items }: ReviewQueueViewProps) {
                   <h2 className="mt-4 text-lg font-semibold tracking-normal">
                     {item.job ? `${item.job.company} - ${item.job.title}` : "Review item"}
                   </h2>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.requiredAction}</p>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">{formatRequiredAction(item.requiredAction)}</p>
                   <p className="mt-3 text-xs text-muted-foreground">Opened {formatDate(item.createdAt)}</p>
                 </div>
 
@@ -120,8 +126,8 @@ export function ReviewQueueView({ items }: ReviewQueueViewProps) {
         <div className="flex items-start gap-3">
           <ClipboardList aria-hidden="true" className="mt-0.5 size-5 text-primary" />
           <p className="text-sm leading-6 text-muted-foreground">
-            Week 12 keeps the queue simple: open items and resolve decisions. Question memory and application package
-            review items arrive in later weeks.
+            The queue now catches low-confidence job scores and application packages so you can resolve decisions before
+            applying.
           </p>
         </div>
       </div>
