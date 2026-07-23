@@ -294,6 +294,19 @@ Week 11 is complete when scored jobs rank deterministically, the dashboard previ
 - Tests: queue workflow tests.
 - Commit: `feat: add review queue`
 
+### Week 12 Completion Review
+
+Use this checklist to review Week 12:
+
+1. Confirm `ReviewQueueItem` exists in `prisma/schema.prisma` and has a deployable migration.
+2. Confirm job scoring creates or updates an open review item for low-confidence scores, missing information, concerns, or `Review` recommendations.
+3. Confirm `/review` lists open items ordered by priority and recency.
+4. Confirm each queue item links back to the related job when available.
+5. Resolve an item and confirm it leaves the open queue.
+6. Run `npx prisma generate`, `prisma validate`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, and `npm run test:e2e`.
+
+Week 12 is complete when review-worthy score outputs enter the queue, users can open and resolve review items, all checks pass, and the branch is pushed to GitHub.
+
 ## Week 13: Question Bank
 
 - Result: approved answers can be saved and matched.

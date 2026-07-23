@@ -40,6 +40,12 @@ function createContext(overrides: Record<string, unknown> = {}) {
 }
 
 describe("matching service", () => {
+  function reviewRepository() {
+    return {
+      createOrUpdateJobScoreReview: vi.fn().mockResolvedValue({ id: "review-1" }),
+    };
+  }
+
   it("evaluates hard criteria before scoring", () => {
     expect(
       evaluateHardCriteria(
@@ -67,8 +73,15 @@ describe("matching service", () => {
       getScoreContext: vi.fn().mockResolvedValue(createContext()),
     };
     const provider = new MockAiProvider({ "job-scoring.v1": validJobScore });
+    const reviews = reviewRepository();
 
-    await scoreJob({ jobId: "job-1", provider, repository: repository as never, userId: "user-1" });
+    await scoreJob({
+      jobId: "job-1",
+      provider,
+      repository: repository as never,
+      reviewRepository: reviews as never,
+      userId: "user-1",
+    });
 
     expect(repository.createJobScore).toHaveBeenCalledWith(
       "user-1",
@@ -83,6 +96,7 @@ describe("matching service", () => {
         promptVersion: "v1",
       },
     );
+    expect(reviews.createOrUpdateJobScoreReview).toHaveBeenCalled();
   });
 
   it("overrides AI output when hard criteria disqualify the job", async () => {
@@ -96,8 +110,15 @@ describe("matching service", () => {
       ),
     };
     const provider = new MockAiProvider({ "job-scoring.v1": validJobScore });
+    const reviews = reviewRepository();
 
-    await scoreJob({ jobId: "job-1", provider, repository: repository as never, userId: "user-1" });
+    await scoreJob({
+      jobId: "job-1",
+      provider,
+      repository: repository as never,
+      reviewRepository: reviews as never,
+      userId: "user-1",
+    });
 
     expect(repository.createJobScore).toHaveBeenCalledWith(
       "user-1",
@@ -117,10 +138,18 @@ describe("matching service", () => {
       getScoreContext: vi.fn().mockResolvedValue({ ...createContext(), defaultResume: null }),
     };
     const provider = new MockAiProvider({ "job-scoring.v1": validJobScore });
+    const reviews = reviewRepository();
 
-    await expect(scoreJob({ jobId: "job-1", provider, repository: repository as never, userId: "user-1" })).rejects.toThrow(
-      "Complete your profile and default resume before scoring jobs.",
-    );
+    await expect(
+      scoreJob({
+        jobId: "job-1",
+        provider,
+        repository: repository as never,
+        reviewRepository: reviews as never,
+        userId: "user-1",
+      }),
+    ).rejects.toThrow("Complete your profile and default resume before scoring jobs.");
     expect(repository.createJobScore).not.toHaveBeenCalled();
+    expect(reviews.createOrUpdateJobScoreReview).not.toHaveBeenCalled();
   });
 });

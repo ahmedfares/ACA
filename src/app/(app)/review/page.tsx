@@ -1,15 +1,11 @@
-import { ClipboardList } from "lucide-react";
+import { auth } from "@/auth";
+import { ReviewQueueView } from "@/components/review-queue/review-queue-view";
+import { reviewQueueRepository } from "@/features/review-queue/repository";
 
-import { EmptyState } from "@/components/app/empty-state";
+export default async function ReviewPage() {
+  const session = await auth();
+  const items =
+    session?.user?.id && process.env.DATABASE_URL ? await reviewQueueRepository.listOpenItems(session.user.id) : [];
 
-export default function ReviewPage() {
-  return (
-    <EmptyState
-      icon={ClipboardList}
-      title="Review queue"
-      status="Planned Week 12"
-      description="Nothing is broken here: review decisions come after scoring and question memory. For Week 8, use Jobs to capture roles and understand duplicate signals."
-      primaryAction={{ href: "/jobs", label: "Review duplicate signals" }}
-    />
-  );
+  return <ReviewQueueView items={items} />;
 }

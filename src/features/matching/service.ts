@@ -2,10 +2,13 @@ import { getPrompt, type AiProvider } from "@/features/ai";
 import { evaluateHardCriteria } from "@/features/matching/hard-criteria";
 import { matchingRepository, type ScoreContext } from "@/features/matching/repository";
 import { jobScoreSchema, type JobScore } from "@/features/matching/schemas";
+import { reviewQueueRepository } from "@/features/review-queue/repository";
+import { reviewDecisionForJobScore } from "@/features/review-queue/rules";
 
 type ScoreJobOptions = {
   provider: AiProvider;
   repository?: typeof matchingRepository;
+  reviewRepository?: typeof reviewQueueRepository;
   userId: string;
   jobId: string;
 };
@@ -63,7 +66,7 @@ function applyHardCriteria(score: JobScore, hardCriteria: JobScore["hardCriteria
   };
 }
 
-export async function scoreJob({ jobId, provider, repository = matchingRepository, userId }: ScoreJobOptions) {
+export async function scoreJob({ jobId, provider, repository = matchingRepository, reviewRepository = reviewQueueRepository, userId }: ScoreJobOptions) {
   const context = await repository.getScoreContext(userId, jobId);
 
   if (!context.job) {
@@ -105,9 +108,14 @@ export async function scoreJob({ jobId, provider, repository = matchingRepositor
     model: result.model,
     promptVersion: result.promptVersion,
   });
+  const reviewItem = await reviewRepository.createOrUpdateJobScoreReview(
+    userId,
+    reviewDecisionForJobScore({ jobId, score: finalScore, userId }),
+  );
 
   return {
     persisted,
+    reviewItem,
     score: finalScore,
   };
 }

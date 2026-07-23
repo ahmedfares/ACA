@@ -22,6 +22,7 @@ model User {
   jobs          Job[]
   preference    Preference?
   resumes       Resume[]
+  reviewItems   ReviewQueueItem[]
   skills        Skill[]
 }
 
@@ -160,6 +161,7 @@ model Job {
   updatedAt          DateTime  @updatedAt
   user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   scores             JobScore[]
+  reviewItems        ReviewQueueItem[]
 
   @@index([userId, canonicalUrl])
   @@index([userId, source, sourceJobId])
@@ -191,4 +193,24 @@ model JobScore {
   job                Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
 
   @@index([userId, jobId, createdAt])
+}
+
+model ReviewQueueItem {
+  id             String    @id @default(cuid())
+  userId         String
+  type           String
+  priority       Int       @default(3)
+  relatedJobId   String?
+  recommendation String?
+  confidence     Int?
+  requiredAction String
+  status         String    @default("Open")
+  resolution     String?
+  createdAt      DateTime  @default(now())
+  resolvedAt     DateTime?
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job            Job?      @relation(fields: [relatedJobId], references: [id], onDelete: SetNull)
+
+  @@index([userId, status, priority])
+  @@index([userId, relatedJobId])
 }

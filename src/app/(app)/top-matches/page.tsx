@@ -21,6 +21,7 @@ export default async function TopMatchesPage() {
       <TopMatchesList
         emptyDescription="No ranked matches yet. Open a saved job, run Score this job, then return here for your ranked top 10."
         matches={matches}
+        title="Ranked roles"
       />
     </section>
   );
