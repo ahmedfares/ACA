@@ -27,7 +27,7 @@ Date: 2026-07-17
 | Job validation | Week 7 | N/A | Complete | N/A | N/A | Unit tests passed | Error messages present | `job-schemas.test.ts` | Server-action error UX with DB | Complete |
 | Duplicate normalization | Week 8 | N/A | Complete | N/A | Deterministic only | Unit matrix passed | N/A | `duplicate-detection.test.ts` | Persisted duplicate integration test | Complete |
 | Duplicate warning UI | Week 8 | Complete | Uses detector | Seeded jobs available locally | Deterministic only | Unit/E2E passed | Clear reasons/confidence | `JobManager`, E2E clear-state assertion | Add exact-warning persisted E2E | Complete locally |
-| AI provider abstraction | Week 9 | Not started | Not started | N/A | Not started | Not tested | N/A | Weekly plan Week 9 | Build in Week 9 | Planned for Weeks 9-16 |
+| AI provider abstraction | Week 9 | N/A | Complete | N/A | Provider boundary complete | Unit tests passed | N/A | `src/features/ai`, `tests/unit/ai-provider.test.ts` | Real API key/configuration for hosted alpha | Complete locally |
 | AI job scoring | Week 10 | Not started | Not started | Not started | Not started | Not tested | N/A | Weekly plan Week 10 | Build in Week 10 | Planned for Weeks 9-16 |
 | Score explanation UI | Week 10 | Not started | Not started | Not started | Not started | Not tested | N/A | Weekly plan Week 10 | Build in Week 10 | Planned for Weeks 9-16 |
 | Top matches | Week 11 | Placeholder only | Not started | Not started | Depends on scoring | Not tested | Placeholder | `/top-matches` | Build in Week 11 | Planned for Weeks 9-16 |

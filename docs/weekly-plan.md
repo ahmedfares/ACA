@@ -230,6 +230,19 @@ Week 8 is complete when duplicate normalization and detection are tested, the Jo
 - Tests: provider mock and schema tests.
 - Commit: `feat: add ai provider abstraction`
 
+### Week 9 Completion Review
+
+Use this checklist to review Week 9:
+
+1. Confirm `src/features/ai` exposes an `AiProvider` interface, prompt registry, mock provider, and OpenAI adapter.
+2. Confirm `src/features/matching` exposes the first structured job-score Zod schema and matching JSON Schema.
+3. Confirm prompts label resumes and job descriptions as untrusted content and prohibit fabricated experience, dates, compensation, work authorization, demographics, and legal/personal facts.
+4. Run `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, and `npm run test:e2e`.
+5. Confirm mocked provider tests validate good structured output and reject invalid output.
+6. Confirm OpenAI adapter tests do not require a real API key or network call.
+
+Week 9 is complete when the AI provider boundary exists, job-scoring structured output validates, prompt safety rules are registered, all checks pass, and the branch is pushed to GitHub.
+
 ## Week 10: Job Scoring
 
 - Result: score one job and persist result.

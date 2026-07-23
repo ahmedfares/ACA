@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 const metrics = [
   { label: "Setup focus", value: "3", detail: "Profile, resume, and first job" },
   { label: "Jobs ready", value: "0", detail: "Add roles for duplicate checks" },
-  { label: "Next AI step", value: "W9", detail: "Provider and scoring foundation" },
+  { label: "Next AI step", value: "W10", detail: "Job scoring and fit reasons" },
   { label: "Alpha goal", value: "5", detail: "Trusted testers after hosted setup" },
 ];
 

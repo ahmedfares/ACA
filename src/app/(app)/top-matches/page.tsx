@@ -9,8 +9,8 @@ export default async function TopMatchesPage({
 }) {
   const params = await searchParams;
   const description = params?.capturedJobId
-    ? "Job captured. This page is intentionally paused during the Week 8 alpha; ranked Apply / Review / Skip recommendations arrive after the Week 9-10 scoring foundation."
-    : "This page is intentionally paused during the Week 8 alpha. Add jobs now; ranked Apply / Review / Skip recommendations arrive after the Week 9-10 scoring foundation.";
+    ? "Job captured. This page is intentionally paused during the current alpha; ranked Apply / Review / Skip recommendations arrive after the Week 10 scoring slice."
+    : "This page is intentionally paused during the current alpha. Add jobs now; ranked Apply / Review / Skip recommendations arrive after the Week 10 scoring slice.";
 
   return (
     <EmptyState
