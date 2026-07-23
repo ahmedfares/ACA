@@ -315,6 +315,19 @@ Week 12 is complete when review-worthy score outputs enter the queue, users can 
 - Tests: question matching tests.
 - Commit: `feat: add approved answer memory`
 
+### Week 13 Completion Review
+
+Use this checklist to review Week 13:
+
+1. Confirm `ApprovedAnswer` and `QuestionMatch` exist in `prisma/schema.prisma` and have a deployable migration.
+2. Confirm `/question-bank` lets a signed-in user save an approved answer with tags, category, and reuse policy.
+3. Confirm duplicate normalized questions update the existing approved answer instead of creating duplicates.
+4. Confirm the deterministic matcher returns exact and high-overlap answers before weak matches.
+5. Confirm using a matched answer records a `QuestionMatch` entry for later application package work.
+6. Run `npx prisma generate`, `prisma validate`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, and `npm run test:e2e`.
+
+Week 13 is complete when approved answers persist, similar questions can be matched without AI, match use can be recorded, all checks pass, and the branch is pushed to GitHub.
+
 ## Week 14: Application Packages
 
 - Result: tailored materials generated with review items.

@@ -20,7 +20,7 @@
 
 ## Implementation Status
 
-Week 7 implements the first profile, resume, and job product data models: `CareerProfile`, `Preference`, `Skill`, `Resume`, and `Job`, alongside the Auth.js account/session tables from Week 2. Later weeks will add scores, questions, applications, review queue items, duplicate matches, and activity events.
+Weeks 7, 10, 12, and 13 implement the current product data models: `CareerProfile`, `Preference`, `Skill`, `Resume`, `Job`, `JobScore`, `ReviewQueueItem`, `ApprovedAnswer`, and `QuestionMatch`, alongside the Auth.js account/session tables from Week 2. Later weeks will add applications, application materials, duplicate match persistence, and activity events.
 
 ## Ownership Rules
 

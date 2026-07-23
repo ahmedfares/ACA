@@ -16,11 +16,13 @@ model User {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   accounts      Account[]
+  approvedAnswers ApprovedAnswer[]
   sessions      Session[]
   careerProfile CareerProfile?
   jobScores     JobScore[]
   jobs          Job[]
   preference    Preference?
+  questionMatches QuestionMatch[]
   resumes       Resume[]
   reviewItems   ReviewQueueItem[]
   skills        Skill[]
@@ -213,4 +215,40 @@ model ReviewQueueItem {
 
   @@index([userId, status, priority])
   @@index([userId, relatedJobId])
+}
+
+model ApprovedAnswer {
+  id                 String          @id @default(cuid())
+  userId             String
+  question           String
+  normalizedQuestion String
+  answer             String
+  category           String?
+  tags               String[]        @default([])
+  reusePolicy        String          @default("Adapt before use")
+  status             String          @default("Approved")
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  user               User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  matches            QuestionMatch[]
+
+  @@unique([userId, normalizedQuestion])
+  @@index([userId, category])
+  @@index([userId, updatedAt])
+}
+
+model QuestionMatch {
+  id                 String         @id @default(cuid())
+  userId             String
+  approvedAnswerId   String
+  question           String
+  normalizedQuestion String
+  score              Int
+  strategy           String
+  createdAt          DateTime       @default(now())
+  user               User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  approvedAnswer     ApprovedAnswer @relation(fields: [approvedAnswerId], references: [id], onDelete: Cascade)
+
+  @@index([userId, normalizedQuestion])
+  @@index([userId, approvedAnswerId, createdAt])
 }

@@ -1,15 +1,24 @@
-import { FileQuestion } from "lucide-react";
+import { auth } from "@/auth";
+import { QuestionBankManager } from "@/components/question-bank/question-bank-manager";
+import { questionRepository } from "@/features/questions/repository";
 
-import { EmptyState } from "@/components/app/empty-state";
+export default async function QuestionBankPage() {
+  const session = await auth();
+  const answers =
+    session?.user?.id && process.env.DATABASE_URL ? await questionRepository.listApprovedAnswers(session.user.id) : [];
 
-export default function QuestionBankPage() {
   return (
-    <EmptyState
-      icon={FileQuestion}
-      title="Question bank"
-      status="Planned Week 13"
-      description="Approved reusable answers are not part of the Week 8 alpha. Build your profile and resume first so future answers stay truthful and grounded."
-      primaryAction={{ href: "/profile", label: "Strengthen profile context" }}
-    />
+    <section className="space-y-6">
+      <div>
+        <p className="text-sm font-medium text-primary">Week 13 answer memory</p>
+        <h1 className="mt-2 text-3xl font-semibold tracking-normal">Question bank</h1>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
+          Save approved answers and match similar questions without inventing facts. This is the source of truth for
+          later application packages.
+        </p>
+      </div>
+
+      <QuestionBankManager answers={answers} databaseConfigured={Boolean(process.env.DATABASE_URL)} />
+    </section>
   );
 }
